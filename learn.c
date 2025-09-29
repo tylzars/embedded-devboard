@@ -308,6 +308,35 @@ void clear_screen() {
     delay_us(50);                    // Hold time
 }
 
+void return_home() {
+    //               RS R/W DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
+    // Return Home   0  0   0   0   0   0   0   0   1   -
+
+    // Command
+    UNSET_BIT(GPIO_N_DATA, LCD_RS);
+
+    // set upper
+    clear_data_lines();
+
+    //toggle
+    delay_ms(10);
+    SET_BIT(GPIO_N_DATA, LCD_E);
+    delay_ms(50);
+    UNSET_BIT(GPIO_N_DATA, LCD_E);
+    delay_ms(50);
+
+    // set lower
+    clear_data_lines();
+    SET_BIT(GPIO_M_DATA, LCD_D5);
+
+    //toggle
+    delay_us(1);
+    SET_BIT(GPIO_N_DATA, LCD_E);
+    delay_us(1);
+    UNSET_BIT(GPIO_N_DATA, LCD_E);
+    delay_us(50);
+}
+
 int main() {
     delay_ms(20);
     init_screen();
@@ -316,6 +345,8 @@ int main() {
         delay_ms(1000);
         clear_screen();
         delay_ms(1000);
+        return_home();
+        delay_ms(10);
     }
 
     return 0;
