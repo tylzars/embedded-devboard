@@ -303,22 +303,26 @@ void return_home() {
     toggle_lcd_enable();
 }
 
+void lcd_put_string(char* string) {
+    int i = 0;
+    while(string[i] != 0x0) {
+        lcd_put_char(string[i]);
+        i++;
+    }
+}
+
 int main() {
     delay_ms(20);
     init_screen();
 
-    char iter = '0';
     while(1) {
-        lcd_put_char(iter);
+        lcd_put_string("fight");
+        delay_ms(1000);
+        return_home();
+        lcd_put_char('l');
         delay_ms(1000);
         clear_screen();
         delay_ms(1000);
-        return_home();
-        delay_ms(10);
-        iter++;
-        if (iter > '9'){
-            iter = '0';
-        }
     }
 
     return 0;
