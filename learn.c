@@ -277,11 +277,44 @@ void lcd_put_char(char c) {
     delay_us(50);
 }
 
+void clear_screen() {
+    //               RS R/W DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
+    // Clear Display 0  0   0   0   0   0   0   0   0   1 
+    
+    // We're sending a command so set RS to 0
+    UNSET_BIT(GPIO_N_DATA, LCD_RS);
+    
+    // Unset top half
+    clear_data_lines();
+
+    // Latch top half unset
+    delay_us(1);                     // Setup time
+    SET_BIT(GPIO_N_DATA, LCD_E);     // Enable high
+    delay_us(1);                     // Enable pulse width
+    UNSET_BIT(GPIO_N_DATA, LCD_E);   // Enable low
+    delay_us(50);                    // Hold time
+
+    // Unset bottom half
+    clear_data_lines();
+
+    // Set last bottom bit
+    SET_BIT(GPIO_M_DATA, LCD_D4);
+
+    // Latch bottom half unset
+    delay_us(1);                     // Setup time
+    SET_BIT(GPIO_N_DATA, LCD_E);     // Enable high
+    delay_us(1);                     // Enable pulse width
+    UNSET_BIT(GPIO_N_DATA, LCD_E);   // Enable low
+    delay_us(50);                    // Hold time
+}
+
 int main() {
     delay_ms(20);
     init_screen();
-    lcd_put_char('M');
     while(1) {
+        lcd_put_char('M');
+        delay_ms(1000);
+        clear_screen();
         delay_ms(1000);
     }
 
