@@ -5,8 +5,8 @@
 #define SYSCTL_GPIOHBCTL (*(volatile uint32_t *)0x400FE06C)
 
 // GPIO Base
-#define GPIO_M_BASE (*(volatile unsigned long *)0x40063000) // LCD 4-7
-#define GPIO_N_BASE (*(volatile unsigned long *)0x40064000) // RST / E
+#define GPIO_M_BASE 0x40063000 // LCD 4-7
+#define GPIO_N_BASE 0x40064000 // RST / E
 
 // GPIO Data
 // I still have no fucking idea how cluade managed to pull this 0x3FC shit out of its ass...
