@@ -203,24 +203,35 @@ int init_screen() {
     return 0;
 }
 
-void lcd_display_A(void) {
+void lcd_put_char(char c) {
     // Set RS=1 for data mode (we're sending character data, not a command)
     SET_BIT(GPIO_N_DATA, LCD_RS);
     
+    // Clear all data lines first for clean state
+    clear_data_lines();
+
     /*
      * Send upper nibble of 'A' (0x41 >> 4 = 0x4)
      * 0x4 = 0100 binary, so we need:
      * LCD_D4 = 0, LCD_D5 = 0, LCD_D6 = 1, LCD_D7 = 0
-     */
+    */
     
-    // Clear all data lines first for clean state
-    UNSET_BIT(GPIO_M_DATA, LCD_D4);
-    UNSET_BIT(GPIO_M_DATA, LCD_D5);
-    UNSET_BIT(GPIO_M_DATA, LCD_D6);
-    UNSET_BIT(GPIO_M_DATA, LCD_D7);
-    
-    // Set only LCD_D6 for upper nibble 0x4
-    SET_BIT(GPIO_M_DATA, LCD_D6);    // Bit 2 of nibble -> LCD_D6
+    // Calcuate only upper nibble
+    char tmp = c >> 4;
+
+    // Check bits in upper nibble
+    if (tmp & 0x1) {
+        SET_BIT(GPIO_M_DATA, LCD_D4); 
+    } 
+    if (tmp & 0x2) {
+        SET_BIT(GPIO_M_DATA, LCD_D5);
+    } 
+    if (tmp & 0x4){
+        SET_BIT(GPIO_M_DATA, LCD_D6);
+    } 
+    if (tmp & 0x8) {
+        SET_BIT(GPIO_M_DATA, LCD_D7);
+    }
     
     // Generate enable pulse to latch upper nibble
     delay_us(1);                     // Setup time
@@ -230,19 +241,30 @@ void lcd_display_A(void) {
     delay_us(50);                    // Hold time
     
     /*
-     * Send lower nibble of 'A' (0x41 & 0x0F = 0x1)
+     * Send lower nibble of 'A' cl
      * 0x1 = 0001 binary, so we need:
      * LCD_D4 = 1, LCD_D5 = 0, LCD_D6 = 0, LCD_D7 = 0
      */
     
     // Clear all data lines first
-    UNSET_BIT(GPIO_M_DATA, LCD_D4);
-    UNSET_BIT(GPIO_M_DATA, LCD_D5);
-    UNSET_BIT(GPIO_M_DATA, LCD_D6);
-    UNSET_BIT(GPIO_M_DATA, LCD_D7);
+    clear_data_lines();
     
-    // Set only LCD_D4 for lower nibble 0x1
-    SET_BIT(GPIO_M_DATA, LCD_D4);    // Bit 0 of nibble -> LCD_D4
+    // Calcuate only lower nibble
+    tmp = c & 0xf;
+
+    // Check bits in lower nibble
+    if (tmp & 0x1) {
+        SET_BIT(GPIO_M_DATA, LCD_D4); 
+    } 
+    if (tmp & 0x2) {
+        SET_BIT(GPIO_M_DATA, LCD_D5);
+    } 
+    if (tmp & 0x4){
+        SET_BIT(GPIO_M_DATA, LCD_D6);
+    } 
+    if (tmp & 0x8) {
+        SET_BIT(GPIO_M_DATA, LCD_D7);
+    }
     
     // Generate enable pulse to latch lower nibble
     delay_us(1);                     // Setup time
@@ -258,7 +280,7 @@ void lcd_display_A(void) {
 int main() {
     delay_ms(20);
     init_screen();
-    lcd_display_A();
+    lcd_put_char('M');
     while(1) {
         delay_ms(1000);
     }
