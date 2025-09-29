@@ -204,7 +204,7 @@ int init_screen() {
 }
 
 void lcd_put_char(char c) {
-    // Set RS=1 for data mode (we're sending character data, not a command)
+    // Setup RS for data
     SET_BIT(GPIO_N_DATA, LCD_RS);
     
     // Clear all data lines first for clean state
@@ -233,12 +233,8 @@ void lcd_put_char(char c) {
         SET_BIT(GPIO_M_DATA, LCD_D7);
     }
     
-    // Generate enable pulse to latch upper nibble
-    delay_us(1);                     // Setup time
-    SET_BIT(GPIO_N_DATA, LCD_E);     // Enable high
-    delay_us(1);                     // Enable pulse width
-    UNSET_BIT(GPIO_N_DATA, LCD_E);   // Enable low
-    delay_us(50);                    // Hold time
+    // Latch upper nibble
+    toggle_lcd_enable();
     
     /*
      * Send lower nibble of 'A' cl
@@ -266,12 +262,8 @@ void lcd_put_char(char c) {
         SET_BIT(GPIO_M_DATA, LCD_D7);
     }
     
-    // Generate enable pulse to latch lower nibble
-    delay_us(1);                     // Setup time
-    SET_BIT(GPIO_N_DATA, LCD_E);     // Enable high
-    delay_us(1);                     // Enable pulse width
-    UNSET_BIT(GPIO_N_DATA, LCD_E);   // Enable low
-    delay_us(50);                    // Hold time
+    // Latch lower nibble
+    toggle_lcd_enable();
     
     // Character write completion delay
     delay_us(50);
@@ -281,72 +273,52 @@ void clear_screen() {
     //               RS R/W DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
     // Clear Display 0  0   0   0   0   0   0   0   0   1 
     
-    // We're sending a command so set RS to 0
+    // Setup RS for command
     UNSET_BIT(GPIO_N_DATA, LCD_RS);
     
     // Unset top half
     clear_data_lines();
-
-    // Latch top half unset
-    delay_us(1);                     // Setup time
-    SET_BIT(GPIO_N_DATA, LCD_E);     // Enable high
-    delay_us(1);                     // Enable pulse width
-    UNSET_BIT(GPIO_N_DATA, LCD_E);   // Enable low
-    delay_us(50);                    // Hold time
+    toggle_lcd_enable();
 
     // Unset bottom half
     clear_data_lines();
-
-    // Set last bottom bit
-    SET_BIT(GPIO_M_DATA, LCD_D4);
-
-    // Latch bottom half unset
-    delay_us(1);                     // Setup time
-    SET_BIT(GPIO_N_DATA, LCD_E);     // Enable high
-    delay_us(1);                     // Enable pulse width
-    UNSET_BIT(GPIO_N_DATA, LCD_E);   // Enable low
-    delay_us(50);                    // Hold time
+    SET_BIT(GPIO_M_DATA, LCD_D4); // Set last bottom bit
+    toggle_lcd_enable();
 }
 
 void return_home() {
     //               RS R/W DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
     // Return Home   0  0   0   0   0   0   0   0   1   -
 
-    // Command
+    // Setup RS for command
     UNSET_BIT(GPIO_N_DATA, LCD_RS);
 
-    // set upper
+    // Set upper
     clear_data_lines();
+    toggle_lcd_enable();
 
-    //toggle
-    delay_ms(10);
-    SET_BIT(GPIO_N_DATA, LCD_E);
-    delay_ms(50);
-    UNSET_BIT(GPIO_N_DATA, LCD_E);
-    delay_ms(50);
-
-    // set lower
+    // Set lower
     clear_data_lines();
     SET_BIT(GPIO_M_DATA, LCD_D5);
-
-    //toggle
-    delay_us(1);
-    SET_BIT(GPIO_N_DATA, LCD_E);
-    delay_us(1);
-    UNSET_BIT(GPIO_N_DATA, LCD_E);
-    delay_us(50);
+    toggle_lcd_enable();
 }
 
 int main() {
     delay_ms(20);
     init_screen();
+
+    char iter = '0';
     while(1) {
-        lcd_put_char('M');
+        lcd_put_char(iter);
         delay_ms(1000);
         clear_screen();
         delay_ms(1000);
         return_home();
         delay_ms(10);
+        iter++;
+        if (iter > '9'){
+            iter = '0';
+        }
     }
 
     return 0;
