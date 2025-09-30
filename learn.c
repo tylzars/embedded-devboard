@@ -269,7 +269,7 @@ void lcd_put_char(char c) {
     delay_us(50);
 }
 
-void clear_screen() {
+void lcd_clear_screen() {
     //               RS R/W DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
     // Clear Display 0  0   0   0   0   0   0   0   0   1 
     
@@ -286,7 +286,7 @@ void clear_screen() {
     toggle_lcd_enable();
 }
 
-void return_home() {
+void lcd_return_cursor_home() {
     //               RS R/W DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
     // Return Home   0  0   0   0   0   0   0   0   1   -
 
@@ -311,17 +311,56 @@ void lcd_put_string(char* string) {
     }
 }
 
+void lcd_move_cursor(int location) {
+    //             RS R/W DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
+    // Set DDRAM   0  0   1   AC6 AC5 AC4 AC3 AC2 AC1 AC0
+
+    UNSET_BIT(GPIO_N_DATA, LCD_RS);
+
+    // Top half
+    clear_data_lines();
+    SET_BIT(GPIO_M_DATA, LCD_D7); // Always 1
+    int tmp = location >> 4;
+    if (tmp & 0x1) {
+        SET_BIT(GPIO_M_DATA, LCD_D4); 
+    } 
+    if (tmp & 0x2) {
+        SET_BIT(GPIO_M_DATA, LCD_D5);
+    } 
+    if (tmp & 0x4){
+        SET_BIT(GPIO_M_DATA, LCD_D6);
+    } 
+    toggle_lcd_enable();
+
+    // Bottom half
+    clear_data_lines();
+    tmp = location & 0xF;
+    if (tmp & 0x1) {
+        SET_BIT(GPIO_M_DATA, LCD_D4); 
+    } 
+    if (tmp & 0x2) {
+        SET_BIT(GPIO_M_DATA, LCD_D5);
+    } 
+    if (tmp & 0x4){
+        SET_BIT(GPIO_M_DATA, LCD_D6);
+    } 
+    if (tmp & 0x8) {
+        SET_BIT(GPIO_M_DATA, LCD_D7);
+    }
+    toggle_lcd_enable();
+}
+
 int main() {
     delay_ms(20);
     init_screen();
 
     while(1) {
-        lcd_put_string("fight");
+        lcd_move_cursor(0xB);
+        lcd_put_string("Wow!");
+        lcd_return_cursor_home();
+        lcd_put_string("It works!");
         delay_ms(1000);
-        return_home();
-        lcd_put_char('l');
-        delay_ms(1000);
-        clear_screen();
+        lcd_clear_screen();
         delay_ms(1000);
     }
 
