@@ -38,19 +38,19 @@
 
 // Bit Manipulation
 #define TOGGLE_BIT(reg, bit) ((reg) ^= (bit))
-void toggle_bit(volatile uint32_t *loc, int bit) {
-    *loc ^= bit;
-}
+// void toggle_bit(volatile uint32_t *loc, int bit) {
+//     *loc ^= bit;
+// }
 
 #define UNSET_BIT(reg, bit)((reg) &= (~bit))
-void unset_bit(volatile uint32_t *loc, int bit) {
-    *loc &= ~bit;
-}
+// void unset_bit(volatile uint32_t *loc, int bit) {
+//     *loc &= ~bit;
+// }
 
 #define SET_BIT(reg, bit)((reg) |= (bit))
-void set_bit(volatile uint32_t *loc, int bit) {
-    *loc |= bit;
-}
+// void set_bit(volatile uint32_t *loc, int bit) {
+//     *loc |= bit;
+// }
 
 // Helper Functions
 void delay_ms(int ms) {
@@ -311,40 +311,47 @@ void lcd_put_string(char* string) {
     }
 }
 
-void lcd_move_cursor(int location) {
+void lcd_move_cursor(uint8_t row, uint8_t col) {
     //             RS R/W DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
     // Set DDRAM   0  0   1   AC6 AC5 AC4 AC3 AC2 AC1 AC0
 
     UNSET_BIT(GPIO_N_DATA, LCD_RS);
 
+    if (row >=2 || col >= 16) {
+        return;
+    }
+
+    // Handle 2nd column offset
+    if (row == 1) {
+        row += 0x41;
+    }
+
     // Top half
     clear_data_lines();
     SET_BIT(GPIO_M_DATA, LCD_D7); // Always 1
-    int tmp = location >> 4;
-    if (tmp & 0x1) {
+    if (row & 0x1) {
         SET_BIT(GPIO_M_DATA, LCD_D4); 
     } 
-    if (tmp & 0x2) {
+    if (row & 0x2) {
         SET_BIT(GPIO_M_DATA, LCD_D5);
     } 
-    if (tmp & 0x4){
+    if (row & 0x4){
         SET_BIT(GPIO_M_DATA, LCD_D6);
     } 
     toggle_lcd_enable();
 
     // Bottom half
     clear_data_lines();
-    tmp = location & 0xF;
-    if (tmp & 0x1) {
+    if (col & 0x1) {
         SET_BIT(GPIO_M_DATA, LCD_D4); 
     } 
-    if (tmp & 0x2) {
+    if (col & 0x2) {
         SET_BIT(GPIO_M_DATA, LCD_D5);
     } 
-    if (tmp & 0x4){
+    if (col & 0x4){
         SET_BIT(GPIO_M_DATA, LCD_D6);
     } 
-    if (tmp & 0x8) {
+    if (col & 0x8) {
         SET_BIT(GPIO_M_DATA, LCD_D7);
     }
     toggle_lcd_enable();
@@ -355,10 +362,12 @@ int main() {
     init_screen();
 
     while(1) {
-        lcd_move_cursor(0xB);
+        lcd_move_cursor(0x0, 0xB);
         lcd_put_string("Wow!");
         lcd_return_cursor_home();
         lcd_put_string("It works!");
+        lcd_move_cursor(0x1, 0xB);
+        lcd_put_string("Cool!");
         delay_ms(1000);
         lcd_clear_screen();
         delay_ms(1000);
