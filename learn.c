@@ -9,19 +9,25 @@ int main() {
     lcd_set_display_on_off(true, false, true);
     lcd_set_entry_mode(true, false);
 
-    while(1) {
-        lcd_move_cursor(0x0, 0xB);
-        lcd_put_string("Wow!");
-        lcd_return_cursor_home();
-        lcd_put_string("It works!");
-        lcd_move_cursor(0x1, 0xB);
-        lcd_put_string("Cool!");
+    bool test = false;
+    int64_t loop = 0;
 
-        byte_to_printable_hex(0xAF);
+    while(true) {
+        if (test) {
+            lcd_put_string("It works!");
+            lcd_move_cursor(0x1, 0xB);
+            lcd_put_string("Cool!");
+        }
+
+        for (int i = 0; i < 8; i++) {
+            byte_to_printable_hex(*(uint8_t*)(loop+i));
+        }
+        
 
         delay_ms(1000);
         lcd_clear_screen();
         delay_ms(1000);
+        loop += 8;
     }
 
     return 0;
