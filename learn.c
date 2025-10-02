@@ -1,5 +1,10 @@
 #include <stdint.h>
 
+// Boolean
+#define bool uint8_t
+#define false 0
+#define true 1
+
 // System Control (TI Specifics)
 #define SYSCTL_RCGCGPIO  (*(volatile uint32_t *)0x400FE608)
 #define SYSCTL_GPIOHBCTL (*(volatile uint32_t *)0x400FE06C)
@@ -315,6 +320,7 @@ void lcd_move_cursor(uint8_t row, uint8_t col) {
     //             RS R/W DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
     // Set DDRAM   0  0   1   AC6 AC5 AC4 AC3 AC2 AC1 AC0
 
+    // Setup RS for command
     UNSET_BIT(GPIO_N_DATA, LCD_RS);
 
     if (row >=2 || col >= 16) {
@@ -357,6 +363,29 @@ void lcd_move_cursor(uint8_t row, uint8_t col) {
     toggle_lcd_enable();
 }
 
+void lcd_set_display_on_off(bool display, bool cursor, bool blinking) {
+    // Setup RS for command
+    UNSET_BIT(GPIO_N_DATA, LCD_RS);
+
+    // Clear upper
+    clear_data_lines();
+    toggle_lcd_enable();
+
+    // Set lower
+    clear_data_lines();
+    SET_BIT(GPIO_M_DATA, LCD_D7);
+    if (display) {
+        SET_BIT(GPIO_M_DATA, LCD_D6);
+    }
+    if (cursor) {
+        SET_BIT(GPIO_M_DATA, LCD_D5);
+    }
+    if (blinking) {
+        SET_BIT(GPIO_M_DATA, LCD_D4);
+    }
+    toggle_lcd_enable();
+}
+
 int main() {
     delay_ms(20);
     init_screen();
@@ -368,9 +397,11 @@ int main() {
         lcd_put_string("It works!");
         lcd_move_cursor(0x1, 0xB);
         lcd_put_string("Cool!");
+        lcd_set_display_on_off(true, true, true);
         delay_ms(1000);
         lcd_clear_screen();
         delay_ms(1000);
+
     }
 
     return 0;
