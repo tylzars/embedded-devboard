@@ -389,6 +389,7 @@ void lcd_set_display_on_off(bool display, bool cursor, bool blinking) {
 int main() {
     delay_ms(20);
     init_screen();
+    lcd_set_display_on_off(true, false, true);
 
     while(1) {
         lcd_move_cursor(0x0, 0xB);
@@ -397,11 +398,9 @@ int main() {
         lcd_put_string("It works!");
         lcd_move_cursor(0x1, 0xB);
         lcd_put_string("Cool!");
-        lcd_set_display_on_off(true, true, true);
         delay_ms(1000);
         lcd_clear_screen();
         delay_ms(1000);
-
     }
 
     return 0;
