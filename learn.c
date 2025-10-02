@@ -386,10 +386,29 @@ void lcd_set_display_on_off(bool display, bool cursor, bool blinking) {
     toggle_lcd_enable();
 }
 
+void lcd_set_entry_mode(bool cursor_direction, bool enable_shift) {
+    UNSET_BIT(GPIO_N_DATA, LCD_RS);
+    clear_data_lines();
+    toggle_lcd_enable();
+
+    clear_data_lines();
+    SET_BIT(GPIO_M_DATA, LCD_D6);
+   
+    // true is right | false is left
+    if (cursor_direction) {
+        SET_BIT(GPIO_M_DATA, LCD_D5);
+    }
+    if (enable_shift) {
+        SET_BIT(GPIO_M_DATA, LCD_D4);
+    }
+    toggle_lcd_enable();
+}
+
 int main() {
     delay_ms(20);
     init_screen();
     lcd_set_display_on_off(true, false, true);
+    lcd_set_entry_mode(true, false);
 
     while(1) {
         lcd_move_cursor(0x0, 0xB);
