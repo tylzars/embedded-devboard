@@ -261,6 +261,8 @@ void lcd_put_string(char* string) {
     }
 }
 
+// Row 0 = Top, Row 1 = Bottom
+// TODO: How column works
 void lcd_move_cursor(uint8_t row, uint8_t col) {
     //             RS R/W DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
     // Set DDRAM   0  0   1   AC6 AC5 AC4 AC3 AC2 AC1 AC0
@@ -272,7 +274,7 @@ void lcd_move_cursor(uint8_t row, uint8_t col) {
         return;
     }
 
-    // Handle 2nd column offset
+    // Handle 2nd row offset
     if (row == 1) {
         row += 0x41;
     }

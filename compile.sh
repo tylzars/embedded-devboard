@@ -13,4 +13,4 @@ arm-none-eabi-gcc \
     --specs=nano.specs \
     -Wl,--gc-sections \
     -o main.elf \
-    learn.c hexdump.c lcd.c global.h startup.c && arm-none-eabi-objcopy -O ihex main.elf main.hex
+    learn.c hexdump.c lcd.c global.h startup.c mlib.c && arm-none-eabi-objcopy -O ihex main.elf main.hex
