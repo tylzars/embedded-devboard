@@ -38,11 +38,6 @@
 #define LCD_RS   0x01   // PN0 (bit 0) - Register Select: 0=Command, 1=Data
 #define LCD_E    0x02   // PN1 (bit 1) - Enable: Rising edge latches data/commands
 
-// Bit Manipulation Macros
-#define TOGGLE_BIT(reg, bit) ((reg) ^= (bit))
-#define UNSET_BIT(reg, bit)  ((reg) &= (~bit))
-#define SET_BIT(reg, bit)    ((reg) |= (bit))
-
 // Timing Functions
 void delay_ms(int ms);
 void delay_us(int us);

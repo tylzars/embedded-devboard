@@ -57,3 +57,21 @@ void itoa(int32_t to_conv, char* post_conv) {
 
     str_reverse(post_conv);
 }
+
+void itohs(int32_t in, char* out) {
+    for (int i = 0; i < 8; i++) {
+        // Get current nibble location
+        int32_t curr_bits = 4 * (7 - i); 
+         // Shift and and to isolate that nibble
+        char nibble = (in >> curr_bits) & 0xF;
+        // Do conversion
+        if (nibble < 10) {
+            nibble = nibble + '0';
+        } else {
+            nibble = nibble + 'A' - 10;
+        }
+        out[i] = nibble;
+    }
+    // Null terminate
+    out[8] = '\0';
+}

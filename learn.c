@@ -21,8 +21,9 @@ int main() {
         }
 
         char curr_addr[10] = {0};
-        itoa(loop, curr_addr);
+        //itoa(loop, curr_addr);
         char hex_curr_addr[10] = "0x"; // this isn't even a hex number...
+        itohs(loop, curr_addr);
         m_strcat(hex_curr_addr, curr_addr);
         lcd_put_string(hex_curr_addr);
         lcd_move_cursor(0x1, 0x8);
