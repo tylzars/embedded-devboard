@@ -9,6 +9,12 @@ int32_t m_strlen(char* in_str) {
     return i;
 }
 
+void m_memset(void *s, int c, int32_t n) {
+    for (int i = 0; i < n; i++) {
+       ((unsigned char*)s)[i] = (unsigned char) c;
+    }
+}
+
 void str_reverse(char* in_str) {
     int32_t end = m_strlen(in_str) - 1;
     int32_t start = 0;
@@ -88,7 +94,8 @@ void to_lower(char *in) {
 
 int m_sprintf(char* out, char* fmt, ...) {
     int32_t fmt_len = m_strlen(fmt);
-    int chars_written = 0;
+    int chars_written = 0;                    
+    char tmp_str[20];
 
     va_list args;
     va_start(args, fmt);
@@ -100,9 +107,9 @@ int m_sprintf(char* out, char* fmt, ...) {
         if (fmt[i] == '%') {
             switch (fmt[++i]) {
                 case 's': {
-                    char *tmp_str = va_arg(args, char*);
-                    int tmp_str_len = m_strlen(tmp_str);
-                    m_strcat(out, tmp_str);
+                    char *tmp_str_var = va_arg(args, char*);
+                    int tmp_str_len = m_strlen(tmp_str_var);
+                    m_strcat(out, tmp_str_var);
                     chars_written = chars_written + tmp_str_len;
                     break;
                 }
@@ -113,11 +120,9 @@ int m_sprintf(char* out, char* fmt, ...) {
                     break;
                 }
                 case 'd': {
-                    char tmp_int_str[20];
-                    itoa(va_arg(args, int), tmp_int_str);
-                    int tmp_int_str_len = m_strlen(tmp_int_str);
-                    m_strcat(out, tmp_int_str);
-                    chars_written = chars_written + tmp_int_str_len;
+                    itoa(va_arg(args, int), tmp_str);
+                    m_strcat(out, tmp_str);
+                    chars_written = chars_written + m_strlen(tmp_str);
                     break;
                 }
                 case 'f': {
@@ -125,23 +130,19 @@ int m_sprintf(char* out, char* fmt, ...) {
                     chars_written++;
                     break;
                 }
-                case 'X': { // this should also handle X
-                    char tmp_hex_str[20];
-                    itohs(va_arg(args, int), tmp_hex_str);
-                    int tmp_hex_str_len = m_strlen(tmp_hex_str);
+                case 'X': {
+                    itohs(va_arg(args, int), tmp_str);
                     m_strcat(out, "0x");
-                    m_strcat(out, tmp_hex_str);
-                    chars_written = chars_written + tmp_hex_str_len + 2;
+                    m_strcat(out, tmp_str);
+                    chars_written = chars_written + m_strlen(tmp_str) + 2;
                     break;
                 }
                 case 'x' :{
-                    char tmp_hex_str[20];
-                    itohs(va_arg(args, int), tmp_hex_str);
-                    int tmp_hex_str_len = m_strlen(tmp_hex_str);
-                    to_lower(tmp_hex_str);
+                    itohs(va_arg(args, int), tmp_str);
+                    to_lower(tmp_str);
                     m_strcat(out, "0x");
-                    m_strcat(out, tmp_hex_str);
-                    chars_written = chars_written + tmp_hex_str_len + 2;
+                    m_strcat(out, tmp_str);
+                    chars_written = chars_written + m_strlen(tmp_str) + 2;
                     break;
                 }
             }
