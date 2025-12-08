@@ -11,4 +11,5 @@ void m_strcat(char* final, char* to_append);
 void itoa(int to_conv, char* post_conv);
 void itohs(int32_t in, char* out);
 int m_sprintf(char* out, char* fmt, ...);
+void to_lower(char *in);
 #endif // MLIB_H

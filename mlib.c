@@ -78,12 +78,23 @@ void itohs(int32_t in, char* out) {
     out[8] = '\0';
 }
 
+void to_lower(char *in) {
+    for (int i = 0; i < m_strlen(in); i++) {
+        if ('A' <= in[i] && in[i] <= 'Z') {
+            in[i] = in[i] + 0x20;
+        }
+    }
+}
+
 int m_sprintf(char* out, char* fmt, ...) {
     int32_t fmt_len = m_strlen(fmt);
     int chars_written = 0;
 
     va_list args;
     va_start(args, fmt);
+
+    // split on spaces (0(n))
+    // find a percent and take until the next space (O(n^2))
 
     for (int i = 0; i < fmt_len; i++) {
         if (fmt[i] == '%') {
@@ -110,15 +121,24 @@ int m_sprintf(char* out, char* fmt, ...) {
                     break;
                 }
                 case 'f': {
-                    // implement ftoa
                     out[chars_written++] = fmt[i];
                     chars_written++;
                     break;
                 }
-                case 'x': { // this should also handle X
+                case 'X': { // this should also handle X
                     char tmp_hex_str[20];
                     itohs(va_arg(args, int), tmp_hex_str);
                     int tmp_hex_str_len = m_strlen(tmp_hex_str);
+                    m_strcat(out, "0x");
+                    m_strcat(out, tmp_hex_str);
+                    chars_written = chars_written + tmp_hex_str_len + 2;
+                    break;
+                }
+                case 'x' :{
+                    char tmp_hex_str[20];
+                    itohs(va_arg(args, int), tmp_hex_str);
+                    int tmp_hex_str_len = m_strlen(tmp_hex_str);
+                    to_lower(tmp_hex_str);
                     m_strcat(out, "0x");
                     m_strcat(out, tmp_hex_str);
                     chars_written = chars_written + tmp_hex_str_len + 2;
