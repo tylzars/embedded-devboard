@@ -145,8 +145,6 @@ int m_sprintf(char* out, char* fmt, ...) {
                     break;
                 }
             }
-            out[chars_written++] = fmt[i];
-            //chars_written++;
         } else {
             out[chars_written++] = fmt[i];
         }
