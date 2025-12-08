@@ -92,6 +92,14 @@ void to_lower(char *in) {
     }
 }
 
+void to_upper(char *in) {
+    for (int i = 0; i < m_strlen(in); i++) {
+        if ('a' <= in[i] && in[i] <= 'z') {
+            in[i] = in[i] - 0x20;
+        }
+    }
+}
+
 int m_sprintf(char* out, char* fmt, ...) {
     int32_t fmt_len = m_strlen(fmt);
     int chars_written = 0;                    
