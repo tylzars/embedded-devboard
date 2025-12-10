@@ -24,16 +24,14 @@ int main() {
             lcd_put_string("Cool!");
         }
 
-        char rtc_readd[10] = {0};
-        itoa(rtc_read(), rtc_readd);
-        lcd_put_string(rtc_readd);
-        delay_ms(500);
+        // char rtc_readd[10] = {0};
+        // itoa(rtc_read(), rtc_readd);
+        // lcd_put_string(rtc_readd);
+        // delay_ms(500);
 
-        char curr_addr[10] = {0};
-        //itoa(loop, curr_addr);
-        char hex_curr_addr[10] = "0x"; // this isn't even a hex number...
-        itohs(loop, curr_addr);
-        m_strcat(hex_curr_addr, curr_addr);
+        char hex_curr_addr[10];
+        m_memset(hex_curr_addr, 0, 10);
+        m_sprintf(hex_curr_addr, "%X", loop);
         lcd_put_string(hex_curr_addr);
         lcd_move_cursor(0x1, 0x8);
 
