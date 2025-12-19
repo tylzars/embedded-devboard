@@ -13,5 +13,6 @@ void itohs(int32_t in, char* out);
 int m_sprintf(char* out, char* fmt, ...);
 void to_lower(char *in);
 void m_memset(void *s, int c, int32_t n);
+void m_memcpy(void *d, void *s, uint32_t n);
 
 #endif // MLIB_H

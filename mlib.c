@@ -15,6 +15,12 @@ void m_memset(void *s, int c, int32_t n) {
     }
 }
 
+void m_memcpy(void *d, void *s, uint32_t n) {
+    for (int i = 0; i < n; i++) {
+        ((unsigned char*)d)[i] = ((unsigned char*)s)[i];
+    }
+}
+
 void str_reverse(char* in_str) {
     int32_t end = m_strlen(in_str) - 1;
     int32_t start = 0;

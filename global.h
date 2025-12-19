@@ -11,4 +11,7 @@
 #define UNSET_BIT(reg, bit)  ((reg) &= (~bit))
 #define SET_BIT(reg, bit)    ((reg) |= (bit))
 
+// Integers
+#define size_t uint32_t
+
 #endif
