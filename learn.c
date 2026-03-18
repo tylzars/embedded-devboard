@@ -4,6 +4,7 @@
 #include "lcd.h"
 #include "mlib.h"
 #include "rtc.h"
+#include "seven_seg.h"
 
 int main() {
     delay_ms(20);
@@ -13,6 +14,11 @@ int main() {
 
     enable_hibernation();
     enable_rtc();
+
+    seven_seg_init();
+    seven_seg_blank();
+    delay_ms(1000);
+    seven_seg_show_hex(0xAF);
 
     bool test = false;
     int32_t loop = 0;
