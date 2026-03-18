@@ -4,6 +4,9 @@
 #include <stdint.h>
 #include "global.h"
 
+// GLOBAL CONFIGURATION
+#define SYSCTL_RCGCGPIO  (*(volatile uint32_t *)0x400FE608)
+
 // PORT CONFIGURATION — mikroBUS1 on SiBRAIN TM4C1294NCPDT
 
 /*

@@ -1,7 +1,6 @@
 #include <stdint.h>
 #include "global.h"
 #include "seven_seg.h"
-#include "lcd.h"  // for delay_us //TODO: take this out of lcd and into global...
 
 /*
  * === 7 SEGMENT ENCODING TABLE ===

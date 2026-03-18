@@ -14,4 +14,8 @@
 // Integers
 #define size_t uint32_t
 
+// Functionality
+void delay_ms(int ms);
+void delay_us(int us);
+
 #endif
