@@ -84,18 +84,23 @@ static void pulse_latch() {
 // Write to both shift registers in hardware
 // Push the update to both segments at the same time
 static void update_display(void) {
+    disable_irqs();
     shift_out_byte(right_digit);    // Write to U2 (DIS2, right)
     shift_out_byte(left_digit);     // Write to U1 (DIS1, left)
     pulse_latch();                  // Push both updates
+    enable_irqs();
 }
 
 void seven_seg_init(void) {
     // Enable required peripherals in chip (turn on the GPIOs)
+    disable_irqs();
     SET_BIT(SYSCTL_RCGCGPIO, SPI_PORT_CLOCK_BIT | LATCH_PORT_CLOCK_BIT | PWM_PORT_CLOCK_BIT);
+    enable_irqs();
     delay_us(500); 
 
     // Configure GPIO Q to default GPIO mode
     #define SPI_PORT_AFSEL  (*(volatile uint32_t *)(SPI_PORT_BASE + 0x420))
+    disable_irqs();
     UNSET_BIT(SPI_PORT_AFSEL, SPI_SCK | SPI_MOSI);
 
     // Set all control pins as outputs
@@ -115,6 +120,7 @@ void seven_seg_init(void) {
     // Turn on the display
     // Set PWM high -> transistors on -> segments light up
     SET_BIT(PWM_PORT_DATA, PIN_PWM);
+    enable_irqs();
 
     // Clear both digits
     left_digit = 0;
@@ -124,9 +130,9 @@ void seven_seg_init(void) {
 
 // Clear the screen (unset all bits)
 void seven_seg_blank(void) {
-    shift_out_byte(0);
-    shift_out_byte(0);
-    pulse_latch();
+    left_digit = 0;
+    right_digit = 0;
+    update_display();
 }
 
 // Write hex bye to 7 seg

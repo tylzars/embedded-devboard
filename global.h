@@ -17,5 +17,7 @@
 // Functionality
 void delay_ms(int ms);
 void delay_us(int us);
+void enable_irqs(void);
+void disable_irqs(void);
 
 #endif
