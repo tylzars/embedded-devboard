@@ -20,6 +20,7 @@ int main() {
     seven_seg_blank();
     delay_ms(1000);
     seven_seg_show_hex(0xAF);
+    seven_seg_set_decimal_points(false, true);
 
     bool test = false;
     int32_t loop = 0;

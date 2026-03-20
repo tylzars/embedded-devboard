@@ -147,16 +147,17 @@ void seven_seg_show_hex(uint8_t value) {
 }
 
 // Toggle on decimal points
-void toggle_decimal_point(bool left, bool right) {
+void seven_seg_set_decimal_points(bool left, bool right) {
     if (left) {
-        left_bitmask |= DOT;
+        SET_BIT(left_bitmask, DOT);
     } else {
-        left_bitmask ^= DOT;
+        UNSET_BIT(left_bitmask, DOT);
     }
+
     if (right) {
-        right_bitmask |= DOT;
+        SET_BIT(right_bitmask, DOT);
     } else {
-        right_bitmask ^= DOT;
+        UNSET_BIT(right_bitmask, DOT);
     }
     
     if (right || left) {

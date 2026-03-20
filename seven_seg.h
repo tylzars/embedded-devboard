@@ -62,6 +62,6 @@ void seven_seg_blank(void);
 void seven_seg_show_hex(uint8_t value);
 
 // Toggle decimal points
-void toggle_decimal_point(bool left, bool right);
+void seven_seg_set_decimal_points(bool left, bool right);
 
 #endif // SEVEN_SEG_H
