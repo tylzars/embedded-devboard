@@ -47,8 +47,9 @@ static const uint8_t seg_table[16] = {
 };
 
 // Current digit state
-static uint8_t left_digit  = 0;
-static uint8_t right_digit = 0;
+static uint8_t left_bitmask = 0;
+static uint8_t right_bitmask = 0;
+static uint8_t prev_bitmask = 0;
 
 // Put the data in the right bit endianess to hardware
 static void shift_out_byte(uint8_t data) {
@@ -85,8 +86,8 @@ static void pulse_latch() {
 // Push the update to both segments at the same time
 static void update_display(void) {
     disable_irqs();
-    shift_out_byte(right_digit);    // Write to U2 (DIS2, right)
-    shift_out_byte(left_digit);     // Write to U1 (DIS1, left)
+    shift_out_byte(right_bitmask);    // Write to U2 (DIS2, right)
+    shift_out_byte(left_bitmask);     // Write to U1 (DIS1, left)
     pulse_latch();                  // Push both updates
     enable_irqs();
 }
@@ -123,21 +124,42 @@ void seven_seg_init(void) {
     enable_irqs();
 
     // Clear both digits
-    left_digit = 0;
-    right_digit = 0;
+    left_bitmask = 0;
+    right_bitmask = 0;
     update_display();
 }
 
 // Clear the screen (unset all bits)
 void seven_seg_blank(void) {
-    left_digit = 0;
-    right_digit = 0;
+    left_bitmask = 0;
+    right_bitmask = 0;
     update_display();
 }
 
 // Write hex bye to 7 seg
 void seven_seg_show_hex(uint8_t value) {
-    left_digit  = seg_table[value >> 4];
-    right_digit = seg_table[value % 0x10];
+    // Save off value for reference
+    prev_bitmask = value;
+
+    left_bitmask  = seg_table[value >> 4];
+    right_bitmask = seg_table[value % 0x10];
     update_display();
+}
+
+// Toggle on decimal points
+void toggle_decimal_point(bool left, bool right) {
+    if (left) {
+        left_bitmask |= DOT;
+    } else {
+        left_bitmask ^= DOT;
+    }
+    if (right) {
+        right_bitmask |= DOT;
+    } else {
+        right_bitmask ^= DOT;
+    }
+    
+    if (right || left) {
+        update_display();
+    }
 }

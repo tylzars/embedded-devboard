@@ -61,4 +61,7 @@ void seven_seg_blank(void);
 // Write hex byte to 7seg
 void seven_seg_show_hex(uint8_t value);
 
+// Toggle decimal points
+void toggle_decimal_point(bool left, bool right);
+
 #endif // SEVEN_SEG_H

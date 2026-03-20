@@ -7,6 +7,7 @@
 #include "seven_seg.h"
 
 int main() {
+    // TODO: Move all INIT code into one file (maybe bootloader?)
     delay_ms(20);
     init_screen();
     lcd_set_display_on_off(true, false, true);
