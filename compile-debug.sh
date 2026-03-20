@@ -4,6 +4,8 @@ arm-none-eabi-gcc \
     -mfpu=fpv4-sp-d16 \
     -mfloat-abi=hard \
     -DPART_TM4C1294NCPDT \
+    -O0 \
+    -g \
     -Wall \
     -T linker.ld \
     -nostdlib \
