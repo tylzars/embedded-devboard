@@ -31,11 +31,17 @@ int main() {
             lcd_move_cursor(0x1, 0xB);
             lcd_put_string("Cool!");
         }
-
-        // char rtc_readd[10] = {0};
-        // itoa(rtc_read(), rtc_readd);
-        // lcd_put_string(rtc_readd);
-        // delay_ms(500);
+        
+        // RTC Test Code
+        char rtc_readd[10] = {0};
+        itoa(rtc_read_seconds(), rtc_readd);
+        lcd_put_string(rtc_readd);
+        sleep_s(10);
+        itoa(rtc_read_seconds(), rtc_readd);
+        lcd_move_cursor(0x1, 0x8);
+        lcd_put_string(rtc_readd);
+        sleep_s(5);
+        lcd_clear_screen();
 
         char hex_curr_addr[10];
         m_memset(hex_curr_addr, 0, 10);
