@@ -20,7 +20,9 @@
 void enable_hibernation(void);
 void enable_rtc(void);
 int16_t rtc_read_subseconds(void);
+int32_t rtc_read_milliseconds(void);
 int32_t rtc_read_seconds(void);
 void sleep_s(int32_t seconds);
+void sleep_ms(int16_t milliseconds);
 
 #endif // RTC_H

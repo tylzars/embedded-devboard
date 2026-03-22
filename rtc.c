@@ -36,11 +36,23 @@ int16_t rtc_read_subseconds(void) {
     }
 }
 
+int32_t rtc_read_milliseconds(void) {
+    int16_t tmp = rtc_read_subseconds();
+    // Convert back for 1/32,768 of a second???
+    return (tmp * 32768) / 1000;
+}
+
 int32_t rtc_read_seconds(void) {
     return HIBRTCC;
 }
 
 void sleep_s(int32_t seconds) {
-    int32_t init_time = HIBRTCC;
-    while (HIBRTCC < init_time + seconds);
+    int32_t init_time = rtc_read_seconds();
+    while (rtc_read_seconds() < init_time + seconds);
+}
+
+void sleep_ms(int16_t milliseconds) {
+    // I think the core is going lightyears faster than this code........
+    int32_t init_time = rtc_read_milliseconds();
+    while (rtc_read_milliseconds() < init_time + milliseconds);
 }

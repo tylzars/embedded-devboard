@@ -43,6 +43,15 @@ int main() {
         sleep_s(5);
         lcd_clear_screen();
 
+        itoa(rtc_read_milliseconds(), rtc_readd);
+        lcd_put_string(rtc_readd);
+        sleep_ms(10);
+        itoa(rtc_read_milliseconds(), rtc_readd);
+        lcd_move_cursor(0x1, 0x8);
+        lcd_put_string(rtc_readd);
+        sleep_s(5);
+        lcd_clear_screen();
+
         char hex_curr_addr[10];
         m_memset(hex_curr_addr, 0, 10);
         m_sprintf(hex_curr_addr, "%X", loop);
