@@ -14,6 +14,10 @@
 // Integers
 #define size_t uint32_t
 
+// Common Registers
+#define SYSCTL_RCGCGPIO  (*(volatile uint32_t *)0x400FE608)
+#define SYSCTL_GPIOHBCTL (*(volatile uint32_t *)0x400FE06C)
+
 // Functionality
 void delay_ms(int ms);
 void delay_us(int us);

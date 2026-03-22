@@ -4,10 +4,6 @@
 #include <stdint.h>
 #include "global.h"
 
-// System Control (TI Specifics)
-#define SYSCTL_RCGCGPIO  (*(volatile uint32_t *)0x400FE608)
-#define SYSCTL_GPIOHBCTL (*(volatile uint32_t *)0x400FE06C)
-
 // GPIO Base
 #define GPIO_M_BASE 0x40063000 // LCD 4-7
 #define GPIO_N_BASE 0x40064000 // RST / E
@@ -43,7 +39,7 @@ void delay_ms(int ms);
 void delay_us(int us);
 
 // LCD Initialization
-int init_screen(void);
+int lcd_init(void);
 
 // LCD Basic Operations
 void lcd_put_char(char c);

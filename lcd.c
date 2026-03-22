@@ -2,7 +2,7 @@
 #include "global.h"
 #include "lcd.h"
 
-void toggle_lcd_enable() {
+static void toggle_lcd_enable() {
     // Toggle E on and off
     delay_us(1);
     SET_BIT(GPIO_N_DATA, LCD_E);
@@ -11,7 +11,7 @@ void toggle_lcd_enable() {
     delay_us(50);
 }
 
-void clear_data_lines() {
+static void clear_data_lines() {
     UNSET_BIT(GPIO_M_DATA, LCD_D4);
     UNSET_BIT(GPIO_M_DATA, LCD_D5);
     UNSET_BIT(GPIO_M_DATA, LCD_D6);
@@ -19,7 +19,7 @@ void clear_data_lines() {
 }
 
 // Worker Functions
-int init_screen() {
+int lcd_init() {
     SET_BIT(SYSCTL_GPIOHBCTL, 0x1800);  // Enable AHB for ports M and N
     SET_BIT(SYSCTL_RCGCGPIO, 0x1800);   // Enable clocks for ports M and N
     delay_ms(10);

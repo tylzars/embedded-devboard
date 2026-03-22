@@ -9,7 +9,7 @@
 int main() {
     // TODO: Move all INIT code into one file (maybe bootloader?)
     delay_ms(20);
-    init_screen();
+    lcd_init();
     lcd_set_display_on_off(true, false, true);
     lcd_set_entry_mode(true, false);
 
@@ -19,19 +19,11 @@ int main() {
     seven_seg_init();
     seven_seg_blank();
     delay_ms(1000);
-    seven_seg_show_hex(0xAF);
+    seven_seg_show_hex(0xBF);
     seven_seg_set_decimal_points(false, true);
-
-    bool test = false;
     int32_t loop = 0;
 
     while(true) {
-        if (test) {
-            lcd_put_string("It works!");
-            lcd_move_cursor(0x1, 0xB);
-            lcd_put_string("Cool!");
-        }
-        
         // RTC Test Code
         char rtc_readd[10] = {0};
         itoa(rtc_read_seconds(), rtc_readd);
@@ -43,14 +35,14 @@ int main() {
         sleep_s(5);
         lcd_clear_screen();
 
-        itoa(rtc_read_milliseconds(), rtc_readd);
-        lcd_put_string(rtc_readd);
-        sleep_ms(10);
-        itoa(rtc_read_milliseconds(), rtc_readd);
-        lcd_move_cursor(0x1, 0x8);
-        lcd_put_string(rtc_readd);
-        sleep_s(5);
-        lcd_clear_screen();
+        // itoa(rtc_read_milliseconds(), rtc_readd);
+        // lcd_put_string(rtc_readd);
+        // sleep_ms(10);
+        // itoa(rtc_read_milliseconds(), rtc_readd);
+        // lcd_move_cursor(0x1, 0x8);
+        // lcd_put_string(rtc_readd);
+        // sleep_s(5);
+        // lcd_clear_screen();
 
         char hex_curr_addr[10];
         m_memset(hex_curr_addr, 0, 10);
