@@ -142,6 +142,12 @@ int lcd_init() {
 }
 
 void lcd_put_char(char c) {
+    // Handle escape sequences
+    if (c == '\n') {
+        lcd_move_cursor(0x1,0);
+        return;
+    }
+
     // Setup RS for data
     SET_BIT(GPIO_N_DATA, LCD_RS);
     
@@ -245,14 +251,7 @@ void lcd_put_string(char* string) {
     int i = 0;
     int len = m_strlen(string);
     while(i < len) {
-        if (string[i] == '\n') {
-            lcd_move_cursor(0x1,0);
-        } else if (string[i] == '\t') {
-            // TODO: Somehow figure this out
-            lcd_move_cursor(0, 4);
-        } else {
-            lcd_put_char(string[i]);
-        }
+        lcd_put_char(string[i]);
         i++;
     }
 }
