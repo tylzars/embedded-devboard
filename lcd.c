@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "global.h"
 #include "lcd.h"
+#include "mlib.h"
 
 static void toggle_lcd_enable() {
     // Toggle E on and off
@@ -242,14 +243,22 @@ void lcd_return_cursor_home() {
 
 void lcd_put_string(char* string) {
     int i = 0;
-    while(string[i] != 0x0) {
-        lcd_put_char(string[i]);
+    int len = m_strlen(string);
+    while(i < len) {
+        if (string[i] == '\n') {
+            lcd_move_cursor(0x1,0);
+        } else if (string[i] == '\t') {
+            // TODO: Somehow figure this out
+            lcd_move_cursor(0, 4);
+        } else {
+            lcd_put_char(string[i]);
+        }
         i++;
     }
 }
 
 // Row 0 = Top, Row 1 = Bottom
-// TODO: How column works
+// Col = [0...16]
 void lcd_move_cursor(uint8_t row, uint8_t col) {
     //             RS R/W DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
     // Set DDRAM   0  0   1   AC6 AC5 AC4 AC3 AC2 AC1 AC0

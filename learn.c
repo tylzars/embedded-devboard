@@ -19,7 +19,7 @@ int main() {
     seven_seg_init();
     seven_seg_blank();
     delay_ms(1000);
-    seven_seg_show_hex(0xEF);
+    seven_seg_show_hex(0x11);
     seven_seg_set_decimal_points(false, true);
     int32_t loop = 0;
 
@@ -46,7 +46,7 @@ int main() {
 
         char hex_curr_addr[10];
         m_memset(hex_curr_addr, 0, 10);
-        m_sprintf(hex_curr_addr, "%X", loop);
+        m_sprintf(hex_curr_addr, "%X\n", loop);
         lcd_put_string(hex_curr_addr);
         lcd_move_cursor(0x1, 0);
 

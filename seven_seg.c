@@ -54,7 +54,7 @@ static uint8_t prev_bitmask = 0;
 // Put the data in the right bit endianess to hardware
 static void shift_out_byte(uint8_t data) {
     // Bit order is flipped
-    for (int i = 7; i >= 0; i -= 1) {
+    for (int i = 7; i >= 0; i--) {
         // Get bit of data to write
         char curr_data = data >> i & 1;
         
