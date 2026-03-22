@@ -262,13 +262,13 @@ void lcd_move_cursor(uint8_t row, uint8_t col) {
     }
 
     // Handle 2nd row offset
+    // Since this is bits [7-5], we need to set the top bit to move over a line
     if (row == 1) {
-        row += 0x41;
+        row = 0x4;
     }
 
-    // Top half
+    // High bits
     clear_data_lines();
-    SET_BIT(GPIO_M_DATA, LCD_D7); // Always 1
     if (row & 0x1) {
         SET_BIT(GPIO_M_DATA, LCD_D4); 
     } 
@@ -278,9 +278,10 @@ void lcd_move_cursor(uint8_t row, uint8_t col) {
     if (row & 0x4){
         SET_BIT(GPIO_M_DATA, LCD_D6);
     } 
+    SET_BIT(GPIO_M_DATA, LCD_D7); // Always 1
     toggle_lcd_enable();
 
-    // Bottom half
+    // Low bits
     clear_data_lines();
     if (col & 0x1) {
         SET_BIT(GPIO_M_DATA, LCD_D4); 
