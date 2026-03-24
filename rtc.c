@@ -24,11 +24,10 @@ void enable_rtc(void) {
 
 int16_t rtc_read_subseconds(void) {
     int32_t pre_read_val = HIBRTCC;
-
     int16_t read_val = HIBRTCSS & 0x7FFF;
-
     int32_t post_read_val = HIBRTCC;
 
+    // Ensure read was on same second
     if (post_read_val != pre_read_val) {
         return -1;
     } else {
@@ -38,6 +37,10 @@ int16_t rtc_read_subseconds(void) {
 
 int32_t rtc_read_milliseconds(void) {
     int16_t tmp = rtc_read_subseconds();
+    // Invalid Read
+    if (tmp == -1) {
+        return -1;
+    }
     // Convert back for 1/32,768 of a second???
     return (tmp * 32768) / 1000;
 }
@@ -46,6 +49,7 @@ int32_t rtc_read_seconds(void) {
     return HIBRTCC;
 }
 
+// TODO: Switch these to timers so it's not a busy loop
 void sleep_s(int32_t seconds) {
     int32_t init_time = rtc_read_seconds();
     while (rtc_read_seconds() < init_time + seconds);

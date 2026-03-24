@@ -34,21 +34,13 @@
 #define LCD_RS   0x01   // PN0 (bit 0) - Register Select: 0=Command, 1=Data
 #define LCD_E    0x02   // PN1 (bit 1) - Enable: Rising edge latches data/commands
 
-// Timing Functions
-void delay_ms(int ms);
-void delay_us(int us);
-
-// LCD Initialization
+// Functionality
 int lcd_init(void);
-
-// LCD Basic Operations
 void lcd_put_char(char c);
 void lcd_put_string(char* string);
 void lcd_clear_screen(void);
 void lcd_return_cursor_home(void);
 void lcd_move_cursor(uint8_t row, uint8_t col);
-
-// LCD Configuration
 void lcd_set_display_on_off(bool display, bool cursor, bool blinking);
 void lcd_set_entry_mode(bool cursor_direction, bool enable_shift);
 

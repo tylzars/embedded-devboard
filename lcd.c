@@ -143,6 +143,7 @@ int lcd_init() {
 
 void lcd_put_char(char c) {
     // Handle escape sequences
+    // TODO: Keep track of the cursor pos so it can loop back to the top...
     if (c == '\n') {
         lcd_move_cursor(0x1,0);
         return;

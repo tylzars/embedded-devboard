@@ -15,8 +15,6 @@
 #define SPI_PORT_DIR      (*(volatile uint32_t *)(SPI_PORT_BASE + 0x400))
 #define SPI_PORT_DEN      (*(volatile uint32_t *)(SPI_PORT_BASE + 0x51C))
 
-
-
 #define SPI_MOSI    (1 << 2)
 #define SPI_SCK     (1 << 0)
 
@@ -49,16 +47,10 @@
 
 #define PWM_PORT_CLOCK_BIT  (1 << 10)  // Port L = bit 10
 
-// Initialize GPIO pins for the 7seg Click
+// Functionality
 void seven_seg_init(void);
-
-// Clear 7seg
 void seven_seg_blank(void);
-
-// Write hex byte to 7seg
 void seven_seg_show_hex(uint8_t value);
-
-// Toggle decimal points
 void seven_seg_set_decimal_points(bool left, bool right);
 
 #endif // SEVEN_SEG_H

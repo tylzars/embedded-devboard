@@ -141,8 +141,8 @@ void seven_seg_show_hex(uint8_t value) {
     // Save off value for reference
     prev_bitmask = value;
 
-    left_bitmask  = seg_table[value >> 4];
-    right_bitmask = seg_table[value % 0x10];
+    left_bitmask  = seg_table[value >> 4 & 0xF];
+    right_bitmask = seg_table[value % 0x10 & 0xF];
     update_display();
 }
 

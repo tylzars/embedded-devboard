@@ -17,6 +17,6 @@ char nibble_to_printable_hex(uint8_t nibble) {
 }
 
 void byte_to_printable_hex(uint8_t byte) {
-    lcd_put_char(nibble_to_printable_hex(byte >> 4));
+    lcd_put_char(nibble_to_printable_hex(byte >> 4 & 0xf));
     lcd_put_char(nibble_to_printable_hex(byte & 0xf));
 }

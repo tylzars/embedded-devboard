@@ -1,4 +1,3 @@
-// Helper Functions
 void delay_ms(int ms) {
     volatile int i, j;
     for(i = 0; i < ms; i++) {

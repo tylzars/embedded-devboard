@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 
+// Functionality
 int32_t m_strlen(char* in_str);
 void str_reverse(char* in_str);
 void m_strcpy(char* src, char* dest);
