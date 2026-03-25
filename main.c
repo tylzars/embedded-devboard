@@ -5,6 +5,7 @@
 #include "mlib.h"
 #include "rtc.h"
 #include "seven_seg.h"
+#include "timer.h"
 
 int main() {
     // TODO: Move all INIT code into one file (maybe bootloader?)
@@ -21,7 +22,9 @@ int main() {
     delay_ms(1000);
     seven_seg_show_hex(0x33);
     seven_seg_set_decimal_points(false, true);
-    
+
+    enable_timer(0);
+      
     int32_t loop = 0;
     char line_buffer[16];
 

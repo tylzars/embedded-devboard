@@ -13,4 +13,4 @@ arm-none-eabi-gcc \
     --specs=nano.specs \
     -Wl,--gc-sections \
     -o main.elf \
-    main.c hexdump.c lcd.c global.c startup.c mlib.c rtc.c seven_seg.c && arm-none-eabi-objcopy -O ihex main.elf main.hex
+    main.c hexdump.c lcd.c global.c startup.c mlib.c rtc.c seven_seg.c timer.c && arm-none-eabi-objcopy -O ihex main.elf main.hex
