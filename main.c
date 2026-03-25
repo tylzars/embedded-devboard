@@ -48,8 +48,12 @@ int main() {
         for (int i = 0; i < 8; i++) {
             byte_to_printable_hex(*(uint8_t*)(loop+i));
         }
-        
 
+        if (loop == 0x50) {
+            // Throw interrupt for testing
+            __asm volatile ("svc 0");
+        }
+        
         sleep_s(2);
         lcd_clear_screen();
         loop += 8;

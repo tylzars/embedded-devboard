@@ -129,6 +129,15 @@ void seven_seg_init(void) {
     update_display();
 }
 
+// Turn 7seg on or off
+void seven_seg_enable(void) {
+    SET_BIT(PWM_PORT_DATA, PIN_PWM);
+}
+
+void seven_seg_disable(void) {
+    UNSET_BIT(PWM_PORT_DATA, PIN_PWM);
+}
+
 // Clear the screen (unset all bits)
 void seven_seg_blank(void) {
     left_bitmask = 0;

@@ -21,7 +21,7 @@
 #define SPI_PORT_CLOCK_BIT  (1 << 14)  // Port Q = bit 14
 
 /*
- * LATCH: Port Q
+ * LATCH: Port H
  * Port H AHB base: 0x4005F000
  */
 #define LATCH_PORT_BASE    0x4005F000
@@ -49,6 +49,8 @@
 
 // Functionality
 void seven_seg_init(void);
+void seven_seg_disable(void);
+void seven_seg_enable(void);
 void seven_seg_blank(void);
 void seven_seg_show_hex(uint8_t value);
 void seven_seg_set_decimal_points(bool left, bool right);

@@ -33,5 +33,7 @@ void Reset_Handler(void) {
 
 // Default handler for unhandled interrupts
 void Default_Handler(void) {
+    extern void seven_seg_show_hex(int);
+    seven_seg_show_hex(0xFF);
     while(1);
 }
