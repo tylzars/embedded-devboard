@@ -15,15 +15,15 @@
 #define TIMER6_BASE 0x400E0000
 #define TIMER7_BASE 0x400E1000
 
-#define TIMER0_GPTMCFG      (*(volatile uint32_t*)TIMER0_BASE + 0x000)
-#define TIMER0_GPTMTAMR     (*(volatile uint32_t*)TIMER0_BASE + 0x004)
-#define TIMER0_GPTMTBMR     (*(volatile uint32_t*)TIMER0_BASE + 0x008)
-#define TIMER0_GPTMCTL      (*(volatile uint32_t*)TIMER0_BASE + 0x00C)
-#define TIMER0_GPTMIMR      (*(volatile uint32_t*)TIMER0_BASE + 0x018)
-#define TIMER0_GPTMIRS      (*(volatile uint32_t*)TIMER0_BASE + 0x01C)
-#define TIMER0_GPTMICR      (*(volatile uint32_t*)TIMER0_BASE + 0x024)
-#define TIMER0_GPTMTAILR    (*(volatile uint32_t*)TIMER0_BASE + 0x028)
-#define TIMER0_GPTMTBILR    (*(volatile uint32_t*)TIMER0_BASE + 0x02C)
+#define TIMER0_GPTMCFG      (*(volatile uint32_t*)(TIMER0_BASE + 0x000))
+#define TIMER0_GPTMTAMR     (*(volatile uint32_t*)(TIMER0_BASE + 0x004))
+#define TIMER0_GPTMTBMR     (*(volatile uint32_t*)(TIMER0_BASE + 0x008))
+#define TIMER0_GPTMCTL      (*(volatile uint32_t*)(TIMER0_BASE + 0x00C))
+#define TIMER0_GPTMIMR      (*(volatile uint32_t*)(TIMER0_BASE + 0x018))
+#define TIMER0_GPTMIRS      (*(volatile uint32_t*)(TIMER0_BASE + 0x01C))
+#define TIMER0_GPTMICR      (*(volatile uint32_t*)(TIMER0_BASE + 0x024))
+#define TIMER0_GPTMTAILR    (*(volatile uint32_t*)(TIMER0_BASE + 0x028))
+#define TIMER0_GPTMTBILR    (*(volatile uint32_t*)(TIMER0_BASE + 0x02C))
 
 #define TIMER0 (1 << 0)
 #define TIMER1 (1 << 1)
@@ -39,5 +39,6 @@
 // Functionality
 void enable_timer(uint8_t timer);
 void disable_timer(uint8_t timer);
+void enable_timer_0(void);
 
 #endif // TIMER_H

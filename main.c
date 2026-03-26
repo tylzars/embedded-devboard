@@ -49,9 +49,9 @@ int main() {
             byte_to_printable_hex(*(uint8_t*)(loop+i));
         }
 
-        if (loop == 0x50) {
+        if (loop == 0x20) {
             // Throw interrupt for testing
-            __asm volatile ("svc 0");
+            enable_timer_0();
         }
         
         sleep_s(2);
