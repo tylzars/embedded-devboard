@@ -24,7 +24,6 @@ int main() {
     seven_seg_set_decimal_points(false, true);
 
     // NVIC Enables (3.4)
-    //(*(volatile uint32_t*)(0xE000E000 + 0x100)) = (uint32_t)0;
     (*(volatile uint32_t*)(0xE000E100)) = 1 << 19; // Enable timer0a in nvic
     // (*(volatile uint32_t*)(0xE000E000 + 0x104)) = 0xFFFFFFFF;
     // (*(volatile uint32_t*)(0xE000E000 + 0x108)) = 0xFFFFFFFF;

@@ -14,9 +14,13 @@
 // Integers
 #define size_t uint32_t
 
+// Types (Thoughts???)
+typedef volatile uint32_t* register32_t;
+typedef volatile uint16_t* register16_t;
+
 // Common Registers
-#define SYSCTL_RCGCGPIO  (*(volatile uint32_t *)0x400FE608)
-#define SYSCTL_GPIOHBCTL (*(volatile uint32_t *)0x400FE06C)
+#define SYSCTL_RCGCGPIO  (*(register32_t)0x400FE608)
+#define SYSCTL_GPIOHBCTL (*(register32_t)0x400FE06C)
 
 // Functionality
 void delay_ms(int ms);

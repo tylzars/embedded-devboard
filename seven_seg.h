@@ -11,9 +11,9 @@
  * Port Q AHB base: 0x40066000
  */
 #define SPI_PORT_BASE     0x40066000
-#define SPI_PORT_DATA     (*(volatile uint32_t *)(SPI_PORT_BASE + 0x3FC))
-#define SPI_PORT_DIR      (*(volatile uint32_t *)(SPI_PORT_BASE + 0x400))
-#define SPI_PORT_DEN      (*(volatile uint32_t *)(SPI_PORT_BASE + 0x51C))
+#define SPI_PORT_DATA     (*(volatile uint32_t*)(SPI_PORT_BASE + 0x3FC))
+#define SPI_PORT_DIR      (*(volatile uint32_t*)(SPI_PORT_BASE + 0x400))
+#define SPI_PORT_DEN      (*(volatile uint32_t*)(SPI_PORT_BASE + 0x51C))
 
 #define SPI_MOSI    (1 << 2)
 #define SPI_SCK     (1 << 0)
@@ -25,9 +25,9 @@
  * Port H AHB base: 0x4005F000
  */
 #define LATCH_PORT_BASE    0x4005F000
-#define LATCH_PORT_DATA    (*(volatile uint32_t *)(LATCH_PORT_BASE + 0x3FC))
-#define LATCH_PORT_DIR     (*(volatile uint32_t *)(LATCH_PORT_BASE + 0x400))
-#define LATCH_PORT_DEN     (*(volatile uint32_t *)(LATCH_PORT_BASE + 0x51C))
+#define LATCH_PORT_DATA    (*(volatile uint32_t*)(LATCH_PORT_BASE + 0x3FC))
+#define LATCH_PORT_DIR     (*(volatile uint32_t*)(LATCH_PORT_BASE + 0x400))
+#define LATCH_PORT_DEN     (*(volatile uint32_t*)(LATCH_PORT_BASE + 0x51C))
 
 #define PIN_LATCH  (1 << 0)   // PH0
 
@@ -39,9 +39,9 @@
  * We use this as a simple digital on/off for now.
  */
 #define PWM_PORT_BASE      0x40062000
-#define PWM_PORT_DATA      (*(volatile uint32_t *)(PWM_PORT_BASE + 0x3FC))
-#define PWM_PORT_DIR       (*(volatile uint32_t *)(PWM_PORT_BASE + 0x400))
-#define PWM_PORT_DEN       (*(volatile uint32_t *)(PWM_PORT_BASE + 0x51C))
+#define PWM_PORT_DATA      (*(volatile uint32_t*)(PWM_PORT_BASE + 0x3FC))
+#define PWM_PORT_DIR       (*(volatile uint32_t*)(PWM_PORT_BASE + 0x400))
+#define PWM_PORT_DEN       (*(volatile uint32_t*)(PWM_PORT_BASE + 0x51C))
 
 #define PIN_PWM    (1 << 4)   // PL4
 

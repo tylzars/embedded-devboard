@@ -5,6 +5,9 @@ void enable_timer(uint8_t timer) {
         // Not a valid timer
         return;
     }
+    // Disable timer on first boot
+    UNSET_BIT(*(volatile uint32_t*)(TIMER0_BASE + GPTMCTL), 1 << 0);
+    // Enable
     SET_BIT(SYSCTL_RCGCTIMER, 1 << timer);
 }
 
@@ -18,10 +21,10 @@ void disable_timer(uint8_t timer) {
 
 // 13.4.1
 void enable_timer_0(void) {
-    UNSET_BIT(TIMER0_GPTMCTL, 1 << 0);
-    TIMER0_GPTMCFG = 0x0;
-    SET_BIT(TIMER0_GPTMTAMR, 1);
-    TIMER0_GPTMTAILR = (uint16_t)10;
-    SET_BIT(TIMER0_GPTMIMR, 1 << 0); 
-    SET_BIT(TIMER0_GPTMCTL, 1 << 0);
+    UNSET_BIT(*(volatile uint32_t*)(TIMER0_BASE + GPTMCTL), 1 << 0);
+    *(volatile uint32_t*)(TIMER0_BASE + GPTMCFG) = 0x0;
+    SET_BIT(*(volatile uint32_t*)(TIMER0_BASE + GPTMTAMR), 1);
+    *(volatile uint32_t*)(TIMER0_BASE + GPTMTAILR) = (uint16_t)10;
+    SET_BIT(*(volatile uint32_t*)(TIMER0_BASE + GPTMIMR), 1 << 0); 
+    SET_BIT(*(volatile uint32_t*)(TIMER0_BASE + GPTMCTL), 1 << 0);
 }

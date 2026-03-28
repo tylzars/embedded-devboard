@@ -9,20 +9,20 @@
 #define GPIO_N_BASE 0x40064000 // RST / E
 
 // GPIO Data
-#define GPIO_N_DATA (*(volatile unsigned long *)(GPIO_N_BASE + 0x3FC))
-#define GPIO_M_DATA (*(volatile unsigned long *)(GPIO_M_BASE + 0x3FC))
+#define GPIO_N_DATA (*(volatile uint32_t*)(GPIO_N_BASE + 0x3FC))
+#define GPIO_M_DATA (*(volatile uint32_t*)(GPIO_M_BASE + 0x3FC))
 
 // Direction Registers
-#define GPIO_N_DIR (*(volatile unsigned long *)(GPIO_N_BASE + 0x400))
-#define GPIO_M_DIR (*(volatile unsigned long *)(GPIO_M_BASE + 0x400))
+#define GPIO_N_DIR (*(volatile uint32_t*)(GPIO_N_BASE + 0x400))
+#define GPIO_M_DIR (*(volatile uint32_t*)(GPIO_M_BASE + 0x400))
 
 // GPIO Interrupt Sense (GPIOIS)
-#define GPIO_N_GPIOIS (*(volatile unsigned long *)(GPIO_N_BASE + 0x404))
-#define GPIO_M_GPIOIS (*(volatile unsigned long *)(GPIO_M_BASE + 0x404))
+#define GPIO_N_GPIOIS (*(volatile uint32_t*)(GPIO_N_BASE + 0x404))
+#define GPIO_M_GPIOIS (*(volatile uint32_t*)(GPIO_M_BASE + 0x404))
 
 // GPIO Digital Enable
-#define GPIO_N_DEN (*(volatile unsigned long *)(GPIO_N_BASE + 0x51C))
-#define GPIO_M_DEN (*(volatile unsigned long *)(GPIO_M_BASE + 0x51C))
+#define GPIO_N_DEN (*(volatile uint32_t*)(GPIO_N_BASE + 0x51C))
+#define GPIO_M_DEN (*(volatile uint32_t*)(GPIO_M_BASE + 0x51C))
 
 // LCD Data Bits
 #define LCD_D4   0x10   // PM4 (bit 4) - Data line 4 (LSB in 4-bit mode)
