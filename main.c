@@ -57,7 +57,7 @@ int main() {
         }
         
         // Let timer rip
-        enable_timer_0();
+        start_timer(TIMER0, 200);
         
         sleep_s(5);
         lcd_clear_screen();

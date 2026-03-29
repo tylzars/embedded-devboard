@@ -42,6 +42,7 @@ void (*const vector_table[])(void) = {
     DEFAULT, DEFAULT, DEFAULT, DEFAULT,  // 44-47
     // Add more handlers as needed...
 };
+// TODO: Figure out why reset just ends up in default handler...
 
 // Reset handler - called on startup
 void Reset_Handler(void) {
@@ -62,9 +63,8 @@ void Default_Handler(void) {
     while(1);
 }
 
-// TODO: this always triggers on first boot
 void timer_iterrupt(void) {
-    *(volatile long*)(0x40030000 + 0x024) = 1 << 0; // unfreeze the os
+    *(volatile long*)(0x40030000 + 0x024) = 1 << 0; // unfreeze the os (unhardcode this?) // TODO: Move interrupt to new file?
     extern void seven_seg_show_hex(int);
     seven_seg_show_hex(0x11);
     return;

@@ -15,28 +15,33 @@
 #define TIMER6_BASE 0x400E0000
 #define TIMER7_BASE 0x400E1000
 
-#define GPTMCFG      0x000
-#define GPTMTAMR     0x004
-#define GPTMTBMR     0x008
-#define GPTMCTL      0x00C
-#define GPTMIMR      0x018
-#define GPTMIRS      0x01C
-#define GPTMICR      0x024
-#define GPTMTAILR    0x028
-#define GPTMTBILR    0x02C
+typedef struct {
+    volatile uint32_t GPTMCFG;
+    volatile uint32_t GPTMTAMR; 
+    volatile uint32_t GPTMTBMR;
+    volatile uint32_t GPTMCTL;
+    volatile uint32_t GPTMSYNC;
+    volatile uint32_t RESERVED1;
+    volatile uint32_t GPTMIMR;
+    volatile uint32_t GPTMIRS;
+    volatile uint32_t GPTMMIS;
+    volatile uint32_t GPTMICR;
+    volatile uint32_t GPTMTAILR;
+    volatile uint32_t GPTMTBILR;
+} timer_t;
 
-#define TIMER0 (1 << 0)
-#define TIMER1 (1 << 1)
-#define TIMER2 (1 << 2)
-#define TIMER3 (1 << 3)
-#define TIMER4 (1 << 4)
-#define TIMER5 (1 << 5)
-#define TIMER6 (1 << 6)
-#define TIMER7 (1 << 7)
+#define TIMER0 ((timer_t*)TIMER0_BASE)
+#define TIMER1 ((timer_t*)TIMER1_BASE)
+#define TIMER2 ((timer_t*)TIMER2_BASE)
+#define TIMER3 ((timer_t*)TIMER3_BASE)
+#define TIMER4 ((timer_t*)TIMER4_BASE)
+#define TIMER5 ((timer_t*)TIMER5_BASE)
+#define TIMER6 ((timer_t*)TIMER6_BASE)
+#define TIMER7 ((timer_t*)TIMER7_BASE)
 
 // Functionality
 void enable_timer(uint8_t timer);
 void disable_timer(uint8_t timer);
-void enable_timer_0(void);
+void start_timer(timer_t *timer, uint16_t time);
 
 #endif // TIMER_H
