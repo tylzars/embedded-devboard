@@ -8,11 +8,6 @@ void enable_timer(uint8_t timer) {
         // Not a valid timer
         return;
     }
-    // Disable timer on first boot
-    //UNSET_BIT(TIMER0->GPTMCTL, 1 << 0); // TODO: Unhardcode this
-    // ^ somehow this breaks it now???????????
-
-    // Enable
     SET_BIT(SYSCTL_RCGCTIMER, 1 << timer);
 }
 

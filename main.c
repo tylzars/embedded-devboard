@@ -63,6 +63,7 @@ int main() {
         sleep_s(5);
 
         // Check if timer finished
+        extern bool timer0_triggered;
         if(timer0_triggered) {
             seven_seg_show_hex(0x00 + (loop%0xFF));
             timer0_triggered = false;
