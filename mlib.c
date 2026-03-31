@@ -144,19 +144,12 @@ int m_sprintf(char* out, char* fmt, ...) {
                     chars_written++;
                     break;
                 }
-                case 'X': {
+                case 'X':
+                case 'x': {
                     itohs(va_arg(args, int), tmp_str);
-                    m_strcat(out, "0x");
+                    //m_strcat(out, "0x");
                     m_strcat(out, tmp_str);
-                    chars_written = chars_written + m_strlen(tmp_str) + 2;
-                    break;
-                }
-                case 'x' :{
-                    itohs(va_arg(args, int), tmp_str);
-                    to_lower(tmp_str);
-                    m_strcat(out, "0x");
-                    m_strcat(out, tmp_str);
-                    chars_written = chars_written + m_strlen(tmp_str) + 2;
+                    chars_written = chars_written + m_strlen(tmp_str);
                     break;
                 }
             }
