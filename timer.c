@@ -1,5 +1,8 @@
 #include "timer.h"
 
+// Variables
+bool volatile timer0_triggered = false;
+
 void enable_timer(uint8_t timer) {
     if (timer > 7) {
         // Not a valid timer
@@ -7,6 +10,7 @@ void enable_timer(uint8_t timer) {
     }
     // Disable timer on first boot
     UNSET_BIT(TIMER0->GPTMCTL, 1 << 0); // TODO: Unhardcode this
+
     // Enable
     SET_BIT(SYSCTL_RCGCTIMER, 1 << timer);
 }
@@ -27,4 +31,10 @@ void start_timer(timer_t *timer, uint16_t time) {
     timer->GPTMTAILR = (uint16_t)time;
     SET_BIT(timer->GPTMIMR, 1 << 0); 
     SET_BIT(timer->GPTMCTL, 1 << 0);
+}
+
+void isr_timer0(void) {
+    SET_BIT(TIMER0->GPTMICR, 1 << 0);
+    timer0_triggered = true; // Don't update display here to keep this quick
+    return;
 }

@@ -1,6 +1,6 @@
-#define DEFAULT Default_Handler
+#include "timer.h"
 
-#define TIMER timer_iterrupt
+#define DEFAULT Default_Handler
 
 // Stack top (end of RAM)
 extern unsigned long _estack;
@@ -8,8 +8,6 @@ extern unsigned long _estack;
 // Function prototypes
 void Reset_Handler(void);
 void Default_Handler(void);
-
-void timer_iterrupt(void);
 
 // Weak aliases for exception handlers
 void NMI_Handler(void) __attribute__((weak, alias("Default_Handler")));
@@ -36,7 +34,7 @@ void (*const vector_table[])(void) = {
     DEFAULT, DEFAULT, DEFAULT, DEFAULT,  // 20-23
     DEFAULT, DEFAULT, DEFAULT, DEFAULT,  // 24-27
     DEFAULT, DEFAULT, DEFAULT, DEFAULT,  // 28-31
-    DEFAULT, DEFAULT, DEFAULT, TIMER,    // 32-35
+    DEFAULT, DEFAULT, DEFAULT, isr_timer0,    // 32-35
     DEFAULT, DEFAULT, DEFAULT, DEFAULT,  // 36-39
     DEFAULT, DEFAULT, DEFAULT, DEFAULT,  // 40-43
     DEFAULT, DEFAULT, DEFAULT, DEFAULT,  // 44-47
@@ -61,11 +59,4 @@ void Default_Handler(void) {
     extern void seven_seg_show_hex(int);
     seven_seg_show_hex(0xFF);
     while(1);
-}
-
-void timer_iterrupt(void) {
-    *(volatile long*)(0x40030000 + 0x024) = 1 << 0; // unfreeze the os (unhardcode this?) // TODO: Move interrupt to new file?
-    extern void seven_seg_show_hex(int);
-    seven_seg_show_hex(0x11);
-    return;
 }

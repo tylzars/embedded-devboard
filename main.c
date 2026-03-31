@@ -28,8 +28,7 @@ int main() {
     // (*(volatile uint32_t*)(0xE000E000 + 0x104)) = 0xFFFFFFFF;
     // (*(volatile uint32_t*)(0xE000E000 + 0x108)) = 0xFFFFFFFF;
     // (*(volatile uint32_t*)(0xE000E000 + 0x10C)) = 0xFFFFFFFF;
-
-
+    
     enable_timer(0);
       
     int32_t loop = 0xe000e100;
@@ -56,10 +55,19 @@ int main() {
             byte_to_printable_hex(*(uint8_t*)(loop+i));
         }
         
+        seven_seg_set_decimal_points(false, true);
+        
         // Let timer rip
         start_timer(TIMER0, 200);
         
         sleep_s(5);
+
+        // Check if timer finished
+        if(timer0_triggered) {
+            seven_seg_show_hex(0x00 + (loop%0xFF));
+            timer0_triggered = false;
+        }
+
         lcd_clear_screen();
         loop += 8;
     }

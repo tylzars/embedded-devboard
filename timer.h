@@ -43,5 +43,9 @@ typedef struct {
 void enable_timer(uint8_t timer);
 void disable_timer(uint8_t timer);
 void start_timer(timer_t *timer, uint16_t time);
+void isr_timer0(void);
+
+// Variables
+extern volatile bool timer0_triggered;
 
 #endif // TIMER_H
