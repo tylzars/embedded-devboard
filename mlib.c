@@ -90,6 +90,24 @@ void itohs(int32_t in, char* out) {
     out[8] = '\0';
 }
 
+char ntohs(uint8_t nibble) {
+    if (nibble < 10) {
+        nibble = nibble + '0';
+    } else {
+        nibble = nibble + 'A' - 10;
+    }
+
+    return nibble;
+}
+
+void btohs(uint8_t byte, char* out) {
+    int len = m_strlen(out);
+    out[len] = ntohs((byte >> 4) & 0xf);
+    out[len + 1] = ntohs(byte & 0xf);
+    out[len + 2] = '\0';
+    return;
+}
+
 void to_lower(char *in) {
     for (int i = 0; i < m_strlen(in); i++) {
         if ('A' <= in[i] && in[i] <= 'Z') {
@@ -110,6 +128,7 @@ int m_sprintf(char* out, char* fmt, ...) {
     int32_t fmt_len = m_strlen(fmt);
     int chars_written = 0;                    
     char tmp_str[20];
+    m_memset(tmp_str, 0x0, 20);
 
     va_list args;
     va_start(args, fmt);
@@ -130,7 +149,7 @@ int m_sprintf(char* out, char* fmt, ...) {
                 case 'c': {
                     char tmp = va_arg(args, int); // no such thing as a char const
                     out[chars_written++] = tmp;
-                    chars_written++;
+                    //chars_written++;
                     break;
                 }
                 case 'd': {
@@ -150,6 +169,24 @@ int m_sprintf(char* out, char* fmt, ...) {
                     //m_strcat(out, "0x");
                     m_strcat(out, tmp_str);
                     chars_written = chars_written + m_strlen(tmp_str);
+                    break;
+                }
+                case 'h': {
+                    switch ((fmt[++i])) {
+                        case 'h': {
+                            switch (fmt[++i]) {
+                                case 'X':
+                                case 'x': {
+                                    btohs(va_arg(args, int), tmp_str);
+                                    //m_strcat(out, "0x");
+                                    m_strcat(out, tmp_str);
+                                    chars_written = chars_written + m_strlen(tmp_str);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
                     break;
                 }
             }

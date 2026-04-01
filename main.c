@@ -1,5 +1,4 @@
 #include <stdint.h>
-#include "hexdump.h"
 #include "global.h"
 #include "lcd.h"
 #include "mlib.h"
@@ -50,10 +49,15 @@ int main() {
         m_memset(line_buffer, 0, 16);
         m_sprintf(line_buffer, "%X\n", loop);
         lcd_put_string(line_buffer);
-
+        
+        char tmp[17] = "\0";
+        char* p = tmp;
         for (int i = 0; i < 8; i++) {
-            byte_to_printable_hex(*(uint8_t*)(loop+i));
+            p += m_sprintf(p, "%hhx", *(uint8_t*)(loop+i));
         }
+        *p = '\0';
+        lcd_put_string(tmp);
+        
         
         seven_seg_set_decimal_points(false, true);
         
@@ -65,7 +69,7 @@ int main() {
         // Check if timer finished
         extern bool timer0_triggered;
         if(timer0_triggered) {
-            seven_seg_show_hex(0x00 + (loop%0xFF));
+            seven_seg_show_hex(((loop-0xe000e100)%0xFF));
             timer0_triggered = false;
         }
 

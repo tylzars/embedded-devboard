@@ -8,10 +8,16 @@ extern unsigned long _estack;
 // Function prototypes
 void Reset_Handler(void);
 void Default_Handler(void);
+void bus_fault_handler(void);
 
 // Weak aliases for exception handlers
 void NMI_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void HardFault_Handler(void) __attribute__((weak, alias("Default_Handler")));
+
+void HardFault_Handler(void) {
+    extern void seven_seg_show_hex(int);
+    seven_seg_show_hex(0xFB);
+    while(1);
+}
 
 // Vector table
 __attribute__((section(".isr_vector")))
@@ -21,7 +27,7 @@ void (*const vector_table[])(void) = {
     NMI_Handler,                    // NMI handler
     HardFault_Handler,              // Hard fault handler
     DEFAULT,                        // 4  - Memory management fault
-    DEFAULT,                        // 5  - Bus fault
+    bus_fault_handler,                        // 5  - Bus fault
     DEFAULT,                        // 6  - Usage fault
     0, 0, 0, 0,                     // 7-10 - Reserved
     DEFAULT,                        // 11 - SVCall
@@ -58,5 +64,11 @@ void Reset_Handler(void) {
 void Default_Handler(void) {
     extern void seven_seg_show_hex(int);
     seven_seg_show_hex(0xFF);
+    while(1);
+}
+
+void bus_fault_handler(void) {
+    extern void seven_seg_show_hex(int);
+    seven_seg_show_hex(0xFE);
     while(1);
 }

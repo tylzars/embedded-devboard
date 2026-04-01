@@ -11,6 +11,8 @@ void m_strcpy(char* src, char* dest);
 void m_strcat(char* final, char* to_append);
 void itoa(int32_t to_conv, char* post_conv);
 void itohs(int32_t in, char* out);
+char ntohs(uint8_t nibble);
+void btohs(uint8_t byte, char* out);
 int m_sprintf(char* out, char* fmt, ...);
 void to_lower(char *in);
 void m_memset(void *s, int c, int32_t n);
