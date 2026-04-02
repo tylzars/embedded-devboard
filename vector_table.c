@@ -9,6 +9,7 @@ extern unsigned long _estack;
 void Reset_Handler(void);
 void Default_Handler(void);
 void bus_fault_handler(void);
+void memory_management_fault_handler(void);
 
 // Weak aliases for exception handlers
 void NMI_Handler(void) __attribute__((weak, alias("Default_Handler")));
@@ -26,8 +27,8 @@ void (*const vector_table[])(void) = {
     Reset_Handler,                  // Reset handler
     NMI_Handler,                    // NMI handler
     HardFault_Handler,              // Hard fault handler
-    DEFAULT,                        // 4  - Memory management fault
-    bus_fault_handler,                        // 5  - Bus fault
+    memory_management_fault_handler,// 4  - Memory management fault
+    bus_fault_handler,              // 5  - Bus fault
     DEFAULT,                        // 6  - Usage fault
     0, 0, 0, 0,                     // 7-10 - Reserved
     DEFAULT,                        // 11 - SVCall
@@ -70,5 +71,11 @@ void Default_Handler(void) {
 void bus_fault_handler(void) {
     extern void seven_seg_show_hex(int);
     seven_seg_show_hex(0xFE);
+    while(1);
+}
+
+void memory_management_fault_handler(void) {
+    extern void seven_seg_show_hex(int);
+    seven_seg_show_hex(0xFD);
     while(1);
 }
