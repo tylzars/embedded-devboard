@@ -52,8 +52,8 @@ int main() {
         
         char tmp[17] = "\0";
         char* p = tmp;
-        for (int i = 0; i < 8; i++) {
-            p += m_sprintf(p, "%hhx", *(uint8_t*)(loop+i));
+        for (int i = 0; i < 8; i+=4) {
+            p += m_sprintf(p, "%x", *(uint32_t*)(loop+i));
         }
         *p = '\0';
         lcd_put_string(tmp);
