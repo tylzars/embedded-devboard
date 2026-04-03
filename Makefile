@@ -19,7 +19,7 @@ CFLAGS_COMMON = -mcpu=cortex-m4 \
 -Wl,--gc-sections \
 -fno-builtin
 
-CFLAGS_DEBUG = -O0 -g
+CFLAGS_DEBUG = -O0 -g -DDEBUG
 CFLAGS_RELEASE = -O2
 
 # Default = release

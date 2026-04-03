@@ -34,6 +34,7 @@ int main() {
     char line_buffer[16];
 
     while(true) {
+        #ifdef DEBUG
         // RTC Test Code
         char rtc_readd[10] = {0};
         itoa(rtc_read_seconds(), rtc_readd);
@@ -44,7 +45,8 @@ int main() {
         lcd_put_string(rtc_readd);
         sleep_s(2);
         lcd_clear_screen();
-        
+        #endif
+
         // LCD Hexdump
         m_memset(line_buffer, 0, 16);
         m_sprintf(line_buffer, "%X\n", loop);
@@ -69,7 +71,7 @@ int main() {
         // Check if timer finished
         extern bool timer0_triggered;
         if(timer0_triggered) {
-            seven_seg_show_hex(((loop-0xe000e100)%0xFF));
+            seven_seg_show_hex((((loop - 0xe000e100) & 0xFF) % 0xFF));
             timer0_triggered = false;
         }
 
