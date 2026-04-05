@@ -149,7 +149,6 @@ int m_sprintf(char* out, char* fmt, ...) {
                 case 'c': {
                     char tmp = va_arg(args, int); // no such thing as a char const
                     out[chars_written++] = tmp;
-                    //chars_written++;
                     break;
                 }
                 case 'd': {
@@ -163,10 +162,15 @@ int m_sprintf(char* out, char* fmt, ...) {
                     chars_written++;
                     break;
                 }
-                case 'X':
+                case 'X': {
+                    itohs(va_arg(args, int), tmp_str);
+                    m_strcat(out, tmp_str);
+                    chars_written = chars_written + m_strlen(tmp_str);
+                    break;
+                }
                 case 'x': {
                     itohs(va_arg(args, int), tmp_str);
-                    //m_strcat(out, "0x");
+                    to_lower(tmp_str);
                     m_strcat(out, tmp_str);
                     chars_written = chars_written + m_strlen(tmp_str);
                     break;
@@ -175,10 +179,15 @@ int m_sprintf(char* out, char* fmt, ...) {
                     switch ((fmt[++i])) {
                         case 'h': {
                             switch (fmt[++i]) {
-                                case 'X':
+                                case 'X': {
+                                    btohs(va_arg(args, int), tmp_str);
+                                    m_strcat(out, tmp_str);
+                                    chars_written = chars_written + m_strlen(tmp_str);
+                                    break;
+                                }
                                 case 'x': {
                                     btohs(va_arg(args, int), tmp_str);
-                                    //m_strcat(out, "0x");
+                                    to_lower(tmp_str);
                                     m_strcat(out, tmp_str);
                                     chars_written = chars_written + m_strlen(tmp_str);
                                     break;

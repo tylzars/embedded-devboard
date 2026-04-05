@@ -8,17 +8,17 @@
 
 int main() {
     // TODO: Move all INIT code into one file (maybe bootloader?)
+    enable_hibernation();
+    enable_rtc();
+
     delay_ms(20);
     lcd_init();
     lcd_set_display_on_off(true, false, true);
     lcd_set_entry_mode(true, false);
 
-    enable_hibernation();
-    enable_rtc();
-
     seven_seg_init();
     seven_seg_blank();
-    delay_ms(1000);
+    sleep_s(1);
     seven_seg_show_hex(0x33);
     seven_seg_set_decimal_points(false, true);
 

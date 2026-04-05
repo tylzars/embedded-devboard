@@ -39,12 +39,11 @@ typedef struct {
     volatile uint32_t isr_unpend2;
     volatile uint32_t isr_unpend3;
     uint8_t reserved3[0x70];
-    volatile const uint32_t isr_active0;
-    volatile const uint32_t isr_active1;
-    volatile const uint32_t isr_active2;
-    volatile const uint32_t isr_active3;
+    volatile const uint32_t isr_active0;    // RO 
+    volatile const uint32_t isr_active1;    // RO
+    volatile const uint32_t isr_active2;    // RO
+    volatile const uint32_t isr_active3;    // RO
     // Priority... TODO
-
 } nvic_t;
 
 // Common Registers
