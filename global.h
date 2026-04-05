@@ -23,10 +23,28 @@ typedef struct {
     volatile uint32_t isr_en1;
     volatile uint32_t isr_en2;
     volatile uint32_t isr_en3;
+    uint8_t reserved0[0x70];
     volatile uint32_t isr_dis0;
     volatile uint32_t isr_dis1;
     volatile uint32_t isr_dis2;
     volatile uint32_t isr_dis3;
+    uint8_t reserved1[0x70];
+    volatile uint32_t isr_pend0;
+    volatile uint32_t isr_pend1;
+    volatile uint32_t isr_pend2;
+    volatile uint32_t isr_pend3;
+    uint8_t reserved2[0x70];
+    volatile uint32_t isr_unpend0;
+    volatile uint32_t isr_unpend1;
+    volatile uint32_t isr_unpend2;
+    volatile uint32_t isr_unpend3;
+    uint8_t reserved3[0x70];
+    volatile const uint32_t isr_active0;
+    volatile const uint32_t isr_active1;
+    volatile const uint32_t isr_active2;
+    volatile const uint32_t isr_active3;
+    // Priority... TODO
+
 } nvic_t;
 
 // Common Registers
@@ -34,8 +52,7 @@ typedef struct {
 #define SYSCTL_GPIOHBCTL        (*(register32_t)0x400FE06C)
 
 #define CORE_PERIPHERAL_BASE    0xE000E000
-#define NVIC_BASE               (CORE_PERIPHERAL_BASE + 0x100) // same as below
-#define NVIC                    ((nvic_t*)NVIC_BASE) // this must be wrapped in parens
+#define NVIC                    ((nvic_t*)(CORE_PERIPHERAL_BASE + 0x100))
 
 // Functionality
 void delay_ms(int ms);

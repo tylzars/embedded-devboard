@@ -24,6 +24,11 @@ int main() {
 
     // NVIC Enables (3.4)
     SET_BIT(NVIC->isr_en0, 1<<19);
+    SET_BIT(NVIC->isr_dis0, 1<<19);
+    sleep_s(1);
+    if ((NVIC->isr_en0 & (1 << 19)) == 0) {
+        SET_BIT(NVIC->isr_en0, 1<<19);    
+    }
     //(*(volatile uint32_t*)(0xE000E100)) = 1 << 19; // Enable timer0a in nvic
     // (*(volatile uint32_t*)(0xE000E000 + 0x104)) = 0xFFFFFFFF;
     // (*(volatile uint32_t*)(0xE000E000 + 0x108)) = 0xFFFFFFFF;
@@ -72,7 +77,7 @@ int main() {
         // Check if timer finished
         extern bool timer0_triggered;
         if(timer0_triggered) {
-            seven_seg_show_hex((((loop - 0xe000e100) & 0xFF) % 0xFF));
+            seven_seg_show_hex((((loop - 0xe000e100) & 0xFF) % 0xFF)+8);
             timer0_triggered = false;
         }
 
