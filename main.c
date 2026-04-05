@@ -23,17 +23,10 @@ int main() {
     seven_seg_set_decimal_points(false, true);
 
     // NVIC Enables (3.4)
-    SET_BIT(NVIC->isr_en0, 1<<19);
-    SET_BIT(NVIC->isr_dis0, 1<<19);
-    sleep_s(1);
     if ((NVIC->isr_en0 & (1 << 19)) == 0) {
         SET_BIT(NVIC->isr_en0, 1<<19);    
     }
-    //(*(volatile uint32_t*)(0xE000E100)) = 1 << 19; // Enable timer0a in nvic
-    // (*(volatile uint32_t*)(0xE000E000 + 0x104)) = 0xFFFFFFFF;
-    // (*(volatile uint32_t*)(0xE000E000 + 0x108)) = 0xFFFFFFFF;
-    // (*(volatile uint32_t*)(0xE000E000 + 0x10C)) = 0xFFFFFFFF;
-    
+
     enable_timer(0);
       
     int32_t loop = 0xe000e100;
@@ -70,16 +63,16 @@ int main() {
         seven_seg_set_decimal_points(false, true);
         
         // Let timer rip
-        start_timer(TIMER0, 200);
-        
-        sleep_s(5);
+        start_timer(TIMER0, 32000000);
 
         // Check if timer finished
         extern bool timer0_triggered;
         if(timer0_triggered) {
-            seven_seg_show_hex((((loop - 0xe000e100) & 0xFF) % 0xFF)+8);
+            seven_seg_show_hex((((loop - 0xe000e100) & 0xFF) % 0xFF));
             timer0_triggered = false;
         }
+
+        sleep_s(5);
 
         lcd_clear_screen();
         loop += 8;

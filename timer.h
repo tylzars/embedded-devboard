@@ -42,7 +42,7 @@ typedef struct {
 // Functionality
 void enable_timer(uint8_t timer);
 void disable_timer(uint8_t timer);
-void start_timer(timer_t *timer, uint16_t time);
+void start_timer(timer_t *timer, uint32_t time);
 void isr_timer0(void);
 
 #endif // TIMER_H

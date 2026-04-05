@@ -20,11 +20,11 @@ void disable_timer(uint8_t timer) {
 }
 
 // 13.4.1
-void start_timer(timer_t *timer, uint16_t time) {
+void start_timer(timer_t *timer, uint32_t time) {
     UNSET_BIT(timer->GPTMCTL, 1 << 0);
     timer->GPTMCFG = 0x0;
     SET_BIT(timer->GPTMTAMR, 1);
-    timer->GPTMTAILR = (uint16_t)time;
+    timer->GPTMTAILR = (uint32_t)time;
     SET_BIT(timer->GPTMIMR, 1 << 0); 
     SET_BIT(timer->GPTMCTL, 1 << 0);
 }
