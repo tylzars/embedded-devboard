@@ -10,15 +10,14 @@ void Reset_Handler(void);
 void Default_Handler(void);
 void bus_fault_handler(void);
 void memory_management_fault_handler(void);
+void HardFault_Handler(void);
 
 // Weak aliases for exception handlers
 void NMI_Handler(void) __attribute__((weak, alias("Default_Handler")));
-
-void HardFault_Handler(void) {
-    extern void seven_seg_show_hex(int);
-    seven_seg_show_hex(0xFB);
-    while(1);
-}
+void Usage_Fault_Handler(void) __attribute__((weak, alias("Default_Handler")));
+void SysTick_Handler(void) __attribute__((weak, alias("Default_Handler")));
+void PendSV_Handler(void) __attribute__((weak, alias("Default_Handler")));
+void SVCall_Handler(void) __attribute__((weak, alias("Default_Handler")));
 
 // Vector table
 __attribute__((section(".isr_vector")))
@@ -29,13 +28,13 @@ void (*const vector_table[])(void) = {
     HardFault_Handler,              // Hard fault handler
     memory_management_fault_handler,// 4  - Memory management fault
     bus_fault_handler,              // 5  - Bus fault
-    DEFAULT,                        // 6  - Usage fault
+    Usage_Fault_Handler,            // 6  - Usage fault
     0, 0, 0, 0,                     // 7-10 - Reserved
-    DEFAULT,                        // 11 - SVCall
-    DEFAULT,                        // 12 - Reserved for Debug
+    SVCall_Handler,                 // 11 - SVCall
+    0,                              // 12 - Reserved for Debug
     0,                              // 13 - Reserved
-    DEFAULT,                        // 14 - PendSV
-    DEFAULT,                        // 15 - SysTick
+    PendSV_Handler,                 // 14 - PendSV
+    SysTick_Handler,                // 15 - SysTick
     // IRQs
     DEFAULT, DEFAULT, DEFAULT, DEFAULT,  // 16-19
     DEFAULT, DEFAULT, DEFAULT, DEFAULT,  // 20-23
@@ -74,5 +73,11 @@ void bus_fault_handler(void) {
 void memory_management_fault_handler(void) {
     extern void seven_seg_show_hex(int);
     seven_seg_show_hex(0xFD);
+    while(1);
+}
+
+void HardFault_Handler(void) {
+    extern void seven_seg_show_hex(int);
+    seven_seg_show_hex(0xFB);
     while(1);
 }
