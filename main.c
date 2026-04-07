@@ -24,7 +24,7 @@ int main() {
 
     // NVIC Enables (3.4)
     if ((NVIC->isr_en0 & (1 << 19)) == 0) {
-        SET_BIT(NVIC->isr_en0, 1<<19);    
+        SET_BIT(NVIC->isr_en0, TIMER0_ISR);    
     }
 
     enable_timer(0);

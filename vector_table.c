@@ -47,12 +47,9 @@ void (*const vector_table[])(void) = {
     DEFAULT, DEFAULT, DEFAULT, DEFAULT,  // 44-47
     // Add more handlers as needed...
 };
-// TODO: Figure out why reset just ends up in default handler...
 
 // Reset handler - called on startup
-void Reset_Handler(void) {
-    // Initialize variables if needed (we're keeping it simple)
-    
+void Reset_Handler(void) {    
     // Call main
     extern int main(void);
     main();

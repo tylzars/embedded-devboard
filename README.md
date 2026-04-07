@@ -9,4 +9,4 @@ Currently attached peripherals:
 - SPI Flash             (mikroBus 2)
 - EEPROM                (mikroBus 3)
 
-Use `./compile` to make a `main.hex` that can be flashed with CodeGrip Studio.
+Use `make` to make a `main.hex` that can be flashed with CodeGrip Studio.

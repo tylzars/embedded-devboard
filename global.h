@@ -10,6 +10,7 @@
 #define TOGGLE_BIT(reg, bit) ((reg) ^= (bit))
 #define UNSET_BIT(reg, bit)  ((reg) &= (~bit))
 #define SET_BIT(reg, bit)    ((reg) |= (bit))
+#define BIT(bit)             (1U << (bit))
 
 // Integers
 #define size_t uint32_t
@@ -52,6 +53,8 @@ typedef struct {
 
 #define CORE_PERIPHERAL_BASE    0xE000E000
 #define NVIC                    ((nvic_t*)(CORE_PERIPHERAL_BASE + 0x100))
+
+#define TIMER0_ISR BIT(19)
 
 // Functionality
 void delay_ms(int ms);
