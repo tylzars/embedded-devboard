@@ -5,27 +5,27 @@
 // 7.4.1
 void enable_hibernation(void) {   
     // Enable WC interrupt
-    HIBIM = (int32_t)0x10;
+    HIB->HIBIM = (int32_t)0x10;
     // Wait for HIBCTL to be writable
-    while((HIBCTL & 0x80000000) == 0);
+    while((HIB->HIBCTL & 0x80000000) == 0);
     // Enable oscillator input
-    HIBCTL = (int32_t)0x40;
+    HIB->HIBCTL = (int32_t)0x40;
     // Wait for WC interrupt to trigger
-    while((HIBMIS & 0x10) == 0);
+    while((HIB->HIBMIS & 0x10) == 0);
 }
 
 // 7.3.5.1
 void enable_rtc(void) {
     // Wait for register to be writable
-    while((HIBCTL & 0x80000000) == 0);
+    while((HIB->HIBCTL & 0x80000000) == 0);
     // Enable RTC
-    SET_BIT(HIBCTL, 0x1); // Make this a #define
+    SET_BIT(HIB->HIBCTL, 0x1); // Make this a #define
 }
 
 int16_t rtc_read_subseconds(void) {
-    int32_t pre_read_val = HIBRTCC;
-    int16_t read_val = HIBRTCSS & 0x7FFF;
-    int32_t post_read_val = HIBRTCC;
+    int32_t pre_read_val = HIB->HIBRTCC;
+    int16_t read_val = HIB->HIBRTCSS & 0x7FFF;
+    int32_t post_read_val = HIB->HIBRTCC;
 
     // Ensure read was on same second
     if (post_read_val != pre_read_val) {
@@ -46,7 +46,7 @@ int32_t rtc_read_milliseconds(void) {
 }
 
 int32_t rtc_read_seconds(void) {
-    return HIBRTCC;
+    return HIB->HIBRTCC;
 }
 
 // TODO: Switch these to timers so it's not a busy loop

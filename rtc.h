@@ -6,12 +6,24 @@
 
 // Address Definitions
 #define HIB_BASE_ADDR 0x400FC000
-#define HIBRTCC     (*(volatile uint32_t*)(HIB_BASE_ADDR + 0x0))
-#define HIBRTCLD    (*(volatile uint32_t*)(HIB_BASE_ADDR + 0x8))
-#define HIBCTL      (*(volatile uint32_t*)(HIB_BASE_ADDR + 0x10))
-#define HIBIM       (*(volatile uint32_t*)(HIB_BASE_ADDR + 0x14))
-#define HIBMIS      (*(volatile uint32_t*)(HIB_BASE_ADDR + 0x1C))
-#define HIBRTCSS    (*(volatile uint32_t*)(HIB_BASE_ADDR + 0x28))
+
+typedef struct {
+    const volatile uint32_t HIBRTCC;
+    volatile uint32_t HIBRTCM0;
+    uint8_t reserved[4];
+    volatile uint32_t HIBRTCLD; // WO
+    volatile uint32_t HIBCTL;
+    volatile uint32_t HIBIM;
+    const volatile uint32_t HIBRIS;
+    const volatile uint32_t HIBMIS;
+    volatile uint32_t HIBIC;        // What does RW1C mean?
+    volatile uint32_t HIBRTCT;
+    volatile uint32_t HIBRTCSS;
+    volatile uint32_t HIBIO;
+    // TODO: Finish
+} hib_t;
+
+#define HIB ((hib_t*)HIB_BASE_ADDR)
 
 // Bit Definitions
 #define RTCEN 0x1
