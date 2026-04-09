@@ -26,9 +26,9 @@ void (*const vector_table[])(void) = {
     Reset_Handler,                  // Reset handler
     NMI_Handler,                    // NMI handler
     HardFault_Handler,              // Hard fault handler
-    memory_management_fault_handler,// 4  - Memory management fault
-    bus_fault_handler,              // 5  - Bus fault
-    Usage_Fault_Handler,            // 6  - Usage fault
+    memory_management_fault_handler,// 4 - Memory management fault
+    bus_fault_handler,              // 5 - Bus fault
+    Usage_Fault_Handler,            // 6 - Usage fault
     0, 0, 0, 0,                     // 7-10 - Reserved
     SVCall_Handler,                 // 11 - SVCall
     0,                              // 12 - Reserved for Debug
@@ -47,37 +47,45 @@ void (*const vector_table[])(void) = {
     // Add more handlers as needed...
 };
 
-// Reset handler - called on startup
 void Reset_Handler(void) {    
-    // Call main
     extern int main(void);
     main();
-    
-    // If main returns, loop forever
     while(1);
 }
 
 // Default handler for unhandled interrupts
 void Default_Handler(void) {
-    extern void seven_seg_show_hex(int);
-    seven_seg_show_hex(0xFF);
+    extern bool seven_seg_initialized;
+    if (seven_seg_initialized) {
+        extern void seven_seg_show_hex(int);
+        seven_seg_show_hex(0xFF);
+    }
     while(1);
 }
 
 void bus_fault_handler(void) {
-    extern void seven_seg_show_hex(int);
-    seven_seg_show_hex(0xFE);
+    extern bool seven_seg_initialized;
+    if (seven_seg_initialized) {
+        extern void seven_seg_show_hex(int);
+        seven_seg_show_hex(0xFB);
+    }
     while(1);
 }
 
 void memory_management_fault_handler(void) {
-    extern void seven_seg_show_hex(int);
-    seven_seg_show_hex(0xFD);
+    extern bool seven_seg_initialized;
+    if (seven_seg_initialized) {
+        extern void seven_seg_show_hex(int);
+        seven_seg_show_hex(0xFC);
+    }
     while(1);
 }
 
 void HardFault_Handler(void) {
-    extern void seven_seg_show_hex(int);
-    seven_seg_show_hex(0xFB);
+    extern bool seven_seg_initialized;
+    if (seven_seg_initialized) {
+        extern void seven_seg_show_hex(int);
+        seven_seg_show_hex(0xFD);
+    }
     while(1);
 }

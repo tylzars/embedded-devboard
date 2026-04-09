@@ -21,16 +21,16 @@ void disable_timer(uint8_t timer) {
 
 // 13.4.1
 void start_timer(timer_t *timer, uint32_t time) {
-    UNSET_BIT(timer->GPTMCTL, 1 << 0);
+    UNSET_BIT(timer->GPTMCTL, BIT(0));
     timer->GPTMCFG = 0x0;
     SET_BIT(timer->GPTMTAMR, 1);
     timer->GPTMTAILR = (uint32_t)time;
-    SET_BIT(timer->GPTMIMR, 1 << 0); 
-    SET_BIT(timer->GPTMCTL, 1 << 0);
+    SET_BIT(timer->GPTMIMR, BIT(0)); 
+    SET_BIT(timer->GPTMCTL, BIT(0));
 }
 
 void isr_timer0(void) {
-    SET_BIT(TIMER0->GPTMICR, 1 << 0);
+    SET_BIT(TIMER0->GPTMICR, BIT(0));
     timer0_triggered = true; // Don't update display here to keep this quick
     return;
 }

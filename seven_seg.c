@@ -50,6 +50,7 @@ static const uint8_t seg_table[16] = {
 static uint8_t left_bitmask = 0;
 static uint8_t right_bitmask = 0;
 static uint8_t prev_bitmask = 0;
+bool seven_seg_initialized = false;
 
 // Put the data in the right bit endianess to hardware
 static void shift_out_byte(uint8_t data) {
@@ -127,6 +128,7 @@ void seven_seg_init(void) {
     left_bitmask = 0;
     right_bitmask = 0;
     update_display();
+    seven_seg_initialized = true;
 }
 
 // Turn 7seg on or off

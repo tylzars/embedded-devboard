@@ -26,7 +26,7 @@ typedef struct {
 #define HIB ((hib_t*)HIB_BASE_ADDR)
 
 // Bit Definitions
-#define RTCEN 0x1
+#define RTCEN BIT(1)
 
 // Functionality
 void enable_hibernation(void);
