@@ -11,11 +11,11 @@ void Default_Handler(void);
 void bus_fault_handler(void);
 void memory_management_fault_handler(void);
 void HardFault_Handler(void);
+void Systick_Handler(void);
 
 // Weak aliases for exception handlers
 void NMI_Handler(void) __attribute__((weak, alias("Default_Handler")));
 void Usage_Fault_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void SysTick_Handler(void) __attribute__((weak, alias("Default_Handler")));
 void PendSV_Handler(void) __attribute__((weak, alias("Default_Handler")));
 void SVCall_Handler(void) __attribute__((weak, alias("Default_Handler")));
 
@@ -34,7 +34,7 @@ void (*const vector_table[])(void) = {
     0,                              // 12 - Reserved for Debug
     0,                              // 13 - Reserved
     PendSV_Handler,                 // 14 - PendSV
-    SysTick_Handler,                // 15 - SysTick
+    Systick_Handler,                // 15 - SysTick
     // IRQs
     DEFAULT, DEFAULT, DEFAULT, DEFAULT,  // 16-19
     DEFAULT, DEFAULT, DEFAULT, DEFAULT,  // 20-23
@@ -88,4 +88,13 @@ void HardFault_Handler(void) {
         seven_seg_show_hex(0xFD);
     }
     while(1);
+}
+
+void Systick_Handler(void) {
+    extern bool seven_seg_initialized;
+    if (seven_seg_initialized) {
+        extern void seven_seg_show_hex(int);
+        seven_seg_show_hex(0xEE);
+    }
+    return;
 }

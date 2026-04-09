@@ -48,12 +48,19 @@ typedef struct {
     // Priority... TODO
 } nvic_t;
 
+typedef struct {
+    __IOM uint32_t STCTRL;
+    __IOM uint32_t STRELOAD;
+    __IOM uint32_t STCURRENT;
+} systick_t;
+
 // Common Registers
 #define SYSCTL_RCGCGPIO         (*(volatile uint32_t*)0x400FE608)
 #define SYSCTL_GPIOHBCTL        (*(volatile uint32_t*)0x400FE06C)
 
 #define CORE_PERIPHERAL_BASE    0xE000E000
 #define NVIC                    ((nvic_t*)(CORE_PERIPHERAL_BASE + 0x100))
+#define SYSTICK                 ((systick_t*)(CORE_PERIPHERAL_BASE + 0x10))
 
 #define TIMER0_ISR BIT(19)
 

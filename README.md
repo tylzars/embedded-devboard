@@ -10,3 +10,12 @@ Currently attached peripherals:
 - EEPROM                (mikroBus 3)
 
 Use `make` to make a `main.hex` that can be flashed with CodeGrip Studio.
+
+## Plan
+
+~~- Implement systick~~
+- Make adding RR item
+  - Figure out context switch
+- systick iterrupt swaps between rr items
+- Shared data (semaphore)
+- 1st -> 7seg updates / 2nd -> lcd update

@@ -22,6 +22,14 @@ int main() {
     seven_seg_show_hex(0x33);
     seven_seg_set_decimal_points(false, true);
 
+    // Enable systick
+    // 1. Program the value in the STRELOAD register.
+    // 2. Clear the STCURRENT register by writing to it with any value.
+    // 3. Configure the STCTRL register for the required operation.
+    SYSTICK->STRELOAD = 0x00FFFFFF;
+    SYSTICK->STCURRENT = 0x00FFFFFF;
+    SET_BIT(SYSTICK->STCTRL, BIT(0) | BIT(1));
+
     // NVIC Enables (3.4)
     if ((NVIC->isr_en0 & (1 << 19)) == 0) {
         SET_BIT(NVIC->isr_en0, TIMER0_ISR);    
