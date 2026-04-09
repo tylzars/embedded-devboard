@@ -8,18 +8,18 @@
 #define HIB_BASE_ADDR 0x400FC000
 
 typedef struct {
-    const volatile uint32_t HIBRTCC;
-    volatile uint32_t HIBRTCM0;
-    uint8_t reserved[4];
-    volatile uint32_t HIBRTCLD; // WO
-    volatile uint32_t HIBCTL;
-    volatile uint32_t HIBIM;
-    const volatile uint32_t HIBRIS;
-    const volatile uint32_t HIBMIS;
-    volatile uint32_t HIBIC;        // What does RW1C mean?
-    volatile uint32_t HIBRTCT;
-    volatile uint32_t HIBRTCSS;
-    volatile uint32_t HIBIO;
+    __IM uint32_t HIBRTCC;
+    __IOM uint32_t HIBRTCM0;
+    __IM uint8_t reserved[4];
+    __OM uint32_t HIBRTCLD;     // WO
+    __IOM uint32_t HIBCTL;
+    __IOM uint32_t HIBIM;
+    __IM uint32_t HIBRIS;
+    __IM uint32_t HIBMIS;
+    __IOM uint32_t HIBIC;        // RW1C
+    __IOM uint32_t HIBRTCT;
+    __IOM uint32_t HIBRTCSS;
+    __IOM uint32_t HIBIO;
     // TODO: Finish
 } hib_t;
 

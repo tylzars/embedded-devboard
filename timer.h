@@ -16,18 +16,18 @@
 #define TIMER7_BASE 0x400E1000
 
 typedef struct {
-    volatile uint32_t GPTMCFG;
-    volatile uint32_t GPTMTAMR; 
-    volatile uint32_t GPTMTBMR;
-    volatile uint32_t GPTMCTL;
-    volatile uint32_t GPTMSYNC;
-    volatile uint32_t RESERVED1;
-    volatile uint32_t GPTMIMR;
-    volatile uint32_t GPTMIRS;
-    volatile uint32_t GPTMMIS;
-    volatile uint32_t GPTMICR;
-    volatile uint32_t GPTMTAILR;
-    volatile uint32_t GPTMTBILR;
+    __IOM uint32_t GPTMCFG;
+    __IOM uint32_t GPTMTAMR; 
+    __IOM uint32_t GPTMTBMR;
+    __IOM uint32_t GPTMCTL;
+    __IOM uint32_t GPTMSYNC;
+    __IOM uint32_t RESERVED1;
+    __IOM uint32_t GPTMIMR;
+    __IOM uint32_t GPTMIRS;
+    __IOM uint32_t GPTMMIS;
+    __IOM uint32_t GPTMICR;
+    __IOM uint32_t GPTMTAILR;
+    __IOM uint32_t GPTMTBILR;
 } timer_t;
 
 #define TIMER0 ((timer_t*)TIMER0_BASE)
