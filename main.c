@@ -44,19 +44,6 @@ int main() {
     char line_buffer[16];
 
     while(true) {
-        #ifdef DEBUG
-        // RTC Test Code
-        char rtc_readd[10] = {0};
-        itoa(rtc_read_seconds(), rtc_readd);
-        lcd_put_string(rtc_readd);
-        sleep_s(2);
-        itoa(rtc_read_seconds(), rtc_readd);
-        lcd_move_cursor(0x1, 0);
-        lcd_put_string(rtc_readd);
-        sleep_s(2);
-        lcd_clear_screen();
-        #endif
-
         // LCD Hexdump
         m_memset(line_buffer, 0, 16);
         m_sprintf(line_buffer, "%X\n", loop);
