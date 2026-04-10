@@ -5,6 +5,7 @@
 #include "rtc.h"
 #include "seven_seg.h"
 #include "timer.h"
+#include "round_robin.h"
 
 int main() {
     // TODO: Move all INIT code into one file (maybe bootloader?)
@@ -36,6 +37,8 @@ int main() {
     }
 
     enable_timer(0);
+
+    create_task((void*)0x4000);
       
     int32_t loop = 0xe000e100;
     char line_buffer[16];
