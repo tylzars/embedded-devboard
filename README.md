@@ -14,6 +14,7 @@ Use `make` to make a `main.hex` that can be flashed with CodeGrip Studio.
 ## Plan
 
 ~~- Implement systick~~
+
 - Make adding RR item
   - Figure out context switch
 - systick iterrupt swaps between rr items
