@@ -10,6 +10,7 @@ void create_task(void* task_entry) {
     tasks[num_tasks].sp = (uint32_t*)(&task_stacks[num_tasks][MAX_STACK_SIZE]);
 
     tasks[num_tasks].ctx.SP = (uint32_t)(&task_stacks[num_tasks][MAX_STACK_SIZE]);
+    tasks[num_tasks].ctx.LR = (uint32_t)(&create_task);
     num_tasks++;
     return;
 }
