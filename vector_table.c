@@ -1,4 +1,5 @@
 #include "timer.h"
+#include "round_robin.h"
 
 #define DEFAULT Default_Handler
 
@@ -16,7 +17,6 @@ void Systick_Handler(void);
 // Weak aliases for exception handlers
 void NMI_Handler(void) __attribute__((weak, alias("Default_Handler")));
 void Usage_Fault_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void PendSV_Handler(void) __attribute__((weak, alias("Default_Handler")));
 void SVCall_Handler(void) __attribute__((weak, alias("Default_Handler")));
 
 // Vector table
@@ -47,7 +47,22 @@ void (*const vector_table[])(void) = {
     // Add more handlers as needed...
 };
 
-void Reset_Handler(void) {    
+void Reset_Handler(void) {
+    // Copy over global data
+    extern uint32_t _sdata, _edata, _sidata;
+    uint32_t *src = &_sidata;
+    uint32_t *dst = &_sdata;
+    while (dst < &_edata) {
+        *dst++ = *src++;
+    }
+
+    // Zero .bss
+    extern uint32_t _sbss, _ebss;
+    dst = &_sbss;
+    while (dst < &_ebss) {
+        *dst++ = 0;
+    }
+
     extern int main(void);
     main();
     while(1);
@@ -91,10 +106,6 @@ void HardFault_Handler(void) {
 }
 
 void Systick_Handler(void) {
-    extern bool seven_seg_initialized;
-    if (seven_seg_initialized) {
-        extern void seven_seg_show_hex(int);
-        seven_seg_show_hex(0xEE);
-    }
+    SET_BIT(SCB->INTCTRL, PENDSV);
     return;
 }

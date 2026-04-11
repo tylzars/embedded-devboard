@@ -30,6 +30,7 @@ SECTIONS
         *(.data*)
         _edata = .;
     } > SRAM AT > FLASH
+    _sidata = LOADADDR(.data);
 
     /* Uninitialized data (zeroed at startup) */
     .bss :
