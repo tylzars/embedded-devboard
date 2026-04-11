@@ -65,7 +65,7 @@ int main() {
     seven_seg_init();
     seven_seg_blank();
     sleep_s(1);
-    seven_seg_show_hex(0x33);
+    //seven_seg_show_hex(0x33);
     seven_seg_set_decimal_points(false, true);
 
     // NVIC Enables (3.4)

@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "round_robin.h"
+#include "seven_seg.h"
 
 uint8_t task_stacks[MAX_TASKS][MAX_STACK_SIZE];
 task_t tasks[MAX_TASKS];
@@ -67,6 +68,7 @@ __attribute__((naked)) void scheduler_launch(void) {
     );
 }
 
+// Move to next task and load it's task control block
 void schedule_next(void) {
     curr_task = (curr_task + 1) % num_tasks;
     next_tcb = &tasks[curr_task];
@@ -74,19 +76,22 @@ void schedule_next(void) {
 
 __attribute__((naked)) void PendSV_Handler(void) {
     asm volatile(
-        // Disable interrupts
+        // Disable interrupts during context switch
         "CPSID   I\n\t"
 
-        // Save current task context (R4-R11 only!)
+        // Save current task context
+        // R4-R11 are callee-saved, hardware only pushes R0-R3, R12, LR, PC, xPSR
         "MRS     R0, PSP\n\t"
         "STMDB   R0!, {R4-R11}\n\t"
 
-        // current_tcb->sp = PSP
+        // current_tcb->sp = PSP (save stack pointer into TCB)
         "LDR     R1, =current_tcb\n\t"
         "LDR     R2, [R1]\n\t"
         "STR     R0, [R2]\n\t"
 
-        // Call scheduler
+        // Save EXC_RETURN before calling C function
+        // EXC_RETURN = Return to thread mode, use PSP
+        "PUSH    {LR}\n\t"
         "BL      schedule_next\n\t"
 
         // current_tcb = next_tcb
@@ -95,15 +100,16 @@ __attribute__((naked)) void PendSV_Handler(void) {
         "LDR     R1, =current_tcb\n\t"
         "STR     R2, [R1]\n\t"
 
-        // Load next task stack
+        // Restore next task context
+        // R2 still points to next_tcb, first member is sp
         "LDR     R0, [R2]\n\t"
         "LDMIA   R0!, {R4-R11}\n\t"
         "MSR     PSP, R0\n\t"
 
+        // Restore EXC_RETURN and re-enable interrupts
+        // Hardware restores R0-R3, R12, LR, PC, xPSR from PSP on BX LR
+        "POP     {LR}\n\t"
         "CPSIE   I\n\t"
         "BX      LR\n\t"
-        :
-        :
-        : "r0","r1","r2","memory"
     );
 }
