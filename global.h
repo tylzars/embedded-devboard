@@ -54,6 +54,18 @@ typedef struct {
     __IOM uint32_t STCURRENT;
 } systick_t;
 
+typedef struct {
+    __IM uint8_t reserved0[0x8];
+    __IOM uint32_t ACTLR;
+    __IM uint8_t reserved1[0xCF4];
+    __IM uint32_t CPUID;
+    __IOM uint32_t INTCTRL;
+    // TODO: Rest of em
+} scb_t;
+
+#define UNPENDSV    (BIT(27))
+#define PENDSV      (BIT(28))
+
 // Common Registers
 #define SYSCTL_RCGCGPIO         (*(volatile uint32_t*)0x400FE608)
 #define SYSCTL_GPIOHBCTL        (*(volatile uint32_t*)0x400FE06C)
@@ -61,6 +73,8 @@ typedef struct {
 #define CORE_PERIPHERAL_BASE    0xE000E000
 #define NVIC                    ((nvic_t*)(CORE_PERIPHERAL_BASE + 0x100))
 #define SYSTICK                 ((systick_t*)(CORE_PERIPHERAL_BASE + 0x10))
+#define SCB                     ((scb_t*)(CORE_PERIPHERAL_BASE)) 
+// ^^^^ TODO: Combine all of these into some mega-abomination?
 
 #define TIMER0_ISR BIT(19)
 
