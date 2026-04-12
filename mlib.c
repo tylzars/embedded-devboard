@@ -72,24 +72,6 @@ void itoa(int32_t to_conv, char* post_conv) {
     str_reverse(post_conv);
 }
 
-void itohs(int32_t in, char* out) {
-    for (int i = 0; i < 8; i++) {
-        // Get current nibble location
-        int32_t curr_bits = 4 * (7 - i); 
-         // Shift and and to isolate that nibble
-        char nibble = (in >> curr_bits) & 0xF;
-        // Do conversion
-        if (nibble < 10) {
-            nibble = nibble + '0';
-        } else {
-            nibble = nibble + 'A' - 10;
-        }
-        out[i] = nibble;
-    }
-    // Null terminate
-    out[8] = '\0';
-}
-
 char ntohs(uint8_t nibble) {
     if (nibble < 10) {
         nibble = nibble + '0';
@@ -107,6 +89,25 @@ void btohs(uint8_t byte, char* out) {
     out[len + 2] = '\0';
     return;
 }
+
+void stohs(int16_t in, char* out) {
+    for (int i = 0; i < 4; i++) {
+        int16_t curr_bits = 4 * (4 - i); 
+        out[i] = ntohs((in >> curr_bits) & 0xF);
+    }
+    // Null terminate
+    out[4] = '\0';
+}
+
+void wtohs(int32_t in, char* out) {
+    for (int i = 0; i < 8; i++) {
+        int32_t curr_bits = 4 * (7 - i); 
+        out[i] = ntohs((in >> curr_bits) & 0xF);
+    }
+    // Null terminate
+    out[8] = '\0';
+}
+
 
 void to_lower(char *in) {
     for (int i = 0; i < m_strlen(in); i++) {
@@ -133,9 +134,7 @@ int m_sprintf(char* out, char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    // split on spaces (0(n))
-    // find a percent and take until the next space (O(n^2))
-
+    // Simple handle % case
     for (int i = 0; i < fmt_len; i++) {
         if (fmt[i] == '%') {
             switch (fmt[++i]) {
@@ -163,13 +162,13 @@ int m_sprintf(char* out, char* fmt, ...) {
                     break;
                 }
                 case 'X': {
-                    itohs(va_arg(args, int), tmp_str);
+                    wtohs(va_arg(args, int), tmp_str);
                     m_strcat(out, tmp_str);
                     chars_written = chars_written + m_strlen(tmp_str);
                     break;
                 }
                 case 'x': {
-                    itohs(va_arg(args, int), tmp_str);
+                    wtohs(va_arg(args, int), tmp_str);
                     to_lower(tmp_str);
                     m_strcat(out, tmp_str);
                     chars_written = chars_written + m_strlen(tmp_str);
@@ -179,6 +178,7 @@ int m_sprintf(char* out, char* fmt, ...) {
                     switch ((fmt[++i])) {
                         case 'h': {
                             switch (fmt[++i]) {
+                                // Byte
                                 case 'X': {
                                     btohs(va_arg(args, int), tmp_str);
                                     m_strcat(out, tmp_str);
@@ -193,6 +193,20 @@ int m_sprintf(char* out, char* fmt, ...) {
                                     break;
                                 }
                             }
+                            break;
+                        }
+                        // Short
+                        case 'X': {
+                            stohs(va_arg(args, int), tmp_str);
+                            m_strcat(out, tmp_str);
+                            chars_written = chars_written + m_strlen(tmp_str);
+                            break;
+                        }
+                        case 'x': {
+                            stohs(va_arg(args, int), tmp_str);
+                            to_lower(tmp_str);
+                            m_strcat(out, tmp_str);
+                            chars_written = chars_written + m_strlen(tmp_str);
                             break;
                         }
                     }

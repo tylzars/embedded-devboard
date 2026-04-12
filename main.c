@@ -20,9 +20,10 @@ void hexdumper(void) {
         m_sprintf(hex_addr, "%X\n", loop);
 
         char* p = read_bytes;
-        for (int i = 0; i < 8; i+=4) {
-            p += m_sprintf(p, "%x", *(uint32_t*)(loop+i));
-        }
+        p += m_sprintf(p, "%x", *(uint32_t*)(loop));
+        p += m_sprintf(p, "%hx", *(uint16_t*)(loop+4));
+        p += m_sprintf(p, "%hhx", *(uint8_t*)(loop+6));
+        p += m_sprintf(p, "%hhx", *(uint8_t*)(loop+7));
         *p = '\0';
         
         disable_irqs();
