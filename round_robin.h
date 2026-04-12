@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #define MAX_STACK_SIZE  1024
-#define MAX_TASKS       2
+#define MAX_TASKS       4
 
 typedef struct {
     uint32_t* sp;

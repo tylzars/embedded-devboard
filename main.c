@@ -10,23 +10,24 @@
 uint32_t loop = 0xe000e100;
 
 void hexdumper(void) {
-    while (true){
-        char line_buffer[16];
-        // LCD Hexdump
-        m_memset(line_buffer, 0, 16);
-        m_sprintf(line_buffer, "%X\n", loop);
-        disable_irqs();
-        lcd_put_string(line_buffer);
-        enable_irqs();
+    char read_bytes[17] = "\0";
+    char hex_addr[17] = "\0";
 
-        char tmp[17] = "\0";
-        char* p = tmp;
+    while (true){
+        m_memset(hex_addr, 0, 17);
+        m_memset(read_bytes, 0x0, 17);
+        
+        m_sprintf(hex_addr, "%X\n", loop);
+
+        char* p = read_bytes;
         for (int i = 0; i < 8; i+=4) {
             p += m_sprintf(p, "%x", *(uint32_t*)(loop+i));
         }
         *p = '\0';
+        
         disable_irqs();
-        lcd_put_string(tmp);
+        lcd_put_string(hex_addr);
+        lcd_put_string(read_bytes);
         enable_irqs();
     }
 }
@@ -44,11 +45,14 @@ void timerman(void) {
             seven_seg_show_hex((((loop - 0xe000e100) & 0xFF) % 0xFF));
             timer0_triggered = false;
         }
+    }
+}
 
-        sleep_s(5);
-
-        lcd_clear_screen();
+void round_robin_reset(void) {
+    while (true) {
         loop += 8;
+        lcd_clear_screen();
+        sleep_s(6);
     }
 }
 
@@ -78,6 +82,7 @@ int main() {
     // Tasks setup
     create_task((void*)hexdumper);
     create_task((void*)timerman);   
+    create_task((void*)round_robin_reset);
     current_tcb = &tasks[0];
     next_tcb = &tasks[0];
     curr_task = 0;
