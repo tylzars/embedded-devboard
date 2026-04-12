@@ -18,6 +18,7 @@ void create_task(void (*task_entry)()) {
     // Get the bottom of the stack
     uint32_t *sp = (uint32_t*)&task_stacks[num_tasks][MAX_STACK_SIZE];
 
+    // Figure 2-7. Exception Stack Frame
     *(--sp) = 0x01000000;           // xPSR (Thumb bit)
     *(--sp) = (uint32_t)task_entry; // PC
     *(--sp) = 0xFFFFFFFD;           // LR (return to thread, PSP)
@@ -72,6 +73,7 @@ __attribute__((naked)) void scheduler_launch(void) {
 void schedule_next(void) {
     curr_task = (curr_task + 1) % num_tasks;
     next_tcb = &tasks[curr_task];
+    return;
 }
 
 __attribute__((naked)) void PendSV_Handler(void) {
@@ -89,6 +91,7 @@ __attribute__((naked)) void PendSV_Handler(void) {
         "LDR     R2, [R1]\n\t"
         "STR     R0, [R2]\n\t"
 
+        // 2.5.7.2 - Exception Return
         // Save EXC_RETURN before calling C function
         // EXC_RETURN = Return to thread mode, use PSP
         "PUSH    {LR}\n\t"

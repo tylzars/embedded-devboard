@@ -88,7 +88,7 @@ int main() {
     curr_task = 0;
 
     // Enable systick
-    SYSTICK->STRELOAD = 0x00FFFFFF;
+    SYSTICK->STRELOAD = 0x00FFFFFF; // TODO: Saleae this out to find duration
     SYSTICK->STCURRENT = 0x00FFFFFF;
     SET_BIT(SYSTICK->STCTRL, BIT(0) | BIT(1));
 

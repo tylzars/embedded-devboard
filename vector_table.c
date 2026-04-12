@@ -106,6 +106,7 @@ void HardFault_Handler(void) {
 }
 
 void Systick_Handler(void) {
+    // Set-Pending for PENDSV
     SET_BIT(SCB->INTCTRL, PENDSV);
     return;
 }
