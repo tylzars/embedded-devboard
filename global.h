@@ -17,7 +17,7 @@
 
 // Types
 #define __IM    const volatile      // Peripheral to CPU (RO)
-#define __OM    volatile            // CPI to Peripheral (WO)
+#define __OM    volatile            // CPU to Peripheral (WO)
 #define __IOM   volatile            // Bi-directional
 
 typedef struct {
